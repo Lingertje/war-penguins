@@ -14,10 +14,6 @@ exports = module.exports = (io) => {
         //Emit to everyone except the current socket that a user has connected
         socket.broadcast.emit('connected', 'A user has connected.');
 
-        socket.on('message', (msg) => { // TODO: Remove this route, just for testing
-            socket.emit('message', player);
-        });
-
         socket.on('keyPress', (data) => {
             handleKeyPress(player, data);
         });

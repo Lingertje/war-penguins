@@ -8,20 +8,18 @@
         <script src="../socket.io/socket.io.js"></script>
         <script>
             var socket = io();
-
-            socket.emit('message', {'sender': 'Mart Linger', 'message': 'Hello World'});
+            var canvasWidth, canvanHeight = 500;
 
             window.onload = function () {
                 const c = document.getElementById('canvas');
                 var ctx = c.getContext('2d');
 
                 socket.on('newPosition', function (data){
-                    ctx.clearRect(0, 0, 500, 500);
+                    ctx.clearRect(0, 0, canvasWidth, canvanHeight);
                     for(let i = 0; i < data.length; i+=1) {
                         ctx.fillRect(data[i].xPos, data[i].yPos, 25, 25);
                     }
                 });
-
 
                 document.onkeydown = function (event) {
                     switch (event.keyCode) {
@@ -33,7 +31,7 @@
                         case 38:
                         case 83:
                         case 40:
-                            socket.emit('keyPress', {inputId: event.keyCode, state: true});
+                            socket.emit('keyPress', { inputId: event.keyCode, state: true });
                     }
                 }
                 document.onkeyup = function (event) {
@@ -46,7 +44,7 @@
                         case 38:
                         case 83:
                         case 40:
-                            socket.emit('keyPress', {inputId: event.keyCode, state: false});
+                            socket.emit('keyPress', { inputId: event.keyCode, state: false });
                     }
                 }
             }
