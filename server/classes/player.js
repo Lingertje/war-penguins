@@ -26,7 +26,7 @@ class Player {
      * @param {number} xPos Position of the player on the x axis
      * @param {number} yPos Position of the player on the y axis
      */
-    setPosition(xPos, yPos){
+    updatePosition(xPos, yPos){
         this.xPos = xPos;
         this.yPos = yPos;
     }

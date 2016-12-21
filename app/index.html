@@ -19,6 +19,8 @@
                 const c = document.getElementById('canvas');
                 var ctx = c.getContext('2d');
 
+                ctx.fillRect(250, 250, 20, 20);
+
                 document.onkeydown = function (event) {
                     switch (event.keyCode) {
                         case 65:
@@ -45,8 +47,6 @@
                             socket.emit('keyPress', {inputId: event.keyCode, state: false});
                     }
                 }
-
-                ctx.fillRect(250, 250, 20, 20);
             }
         </script>
     </head>
