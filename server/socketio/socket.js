@@ -8,7 +8,7 @@ exports = module.exports = (io) => {
         SOCKET_LIST[socket.id] = socket;
 
         // Instantiate new player object and add player to PLAYER_LIST
-        var player = new Player(socket.id, 40, 250);
+        var player = new Player(socket.id, Math.floor((Math.random() * 500) + 1), Math.floor((Math.random() * 500) + 1));
         PLAYER_LIST[socket.id] = player;
 
         //Emit to everyone except the current socket that a user has connected
