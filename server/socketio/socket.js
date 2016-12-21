@@ -21,13 +21,14 @@ exports = module.exports = (io) => {
         socket.on('keyPress', (data) => {
             handleKeyPress(player, data)
                 .then(newPos => {
-                    socket.emit('newPosition', newPos);
+                    //socket.emit('newPosition', newPos);
                 })
                 .catch(err => console.log(err));
         });
 
         socket.on('disconnect', () => {
-           console.log('A user has disconnected');
+           delete SOCKET_LIST[socket.id];
+           delete PLAYER_LIST[socket.id];
         });
     });
 };
@@ -35,14 +36,14 @@ exports = module.exports = (io) => {
 function handleKeyPress(player, data) {
     let position = player.getPosition();
 
-    if (data.inputId === 68 && data.state) {
-        position.yPos += player.maxSpd;
-    } else if (data.inputId === 65 && data.state) {
-        position.xPos -= player.maxSpd;
-    } else if (data.inputId === 87 && data.state) {
+    if ((data.inputId === 68 || data.inputId === 39) && data.state) {
         position.xPos += player.maxSpd;
-    } else if (data.inputId === 83 && data.state) {
+    } else if ((data.inputId === 65 || data.inputId === 37) && data.state) {
+        position.xPos -= player.maxSpd;
+    } else if ((data.inputId === 87 || data.inputId === 38) && data.state) {
         position.yPos -= player.maxSpd;
+    } else if ((data.inputId === 83 || data.inputId === 40) && data.state) {
+        position.yPos += player.maxSpd;
     }
 
     player.updatePosition(position.xPos, position.yPos);
@@ -58,8 +59,8 @@ setInterval(function (){
         var position = player.getPosition();
         package.push({
             id: player.id,
-            x:position.xPos,
-            y:position.yPos,
+            xPos:position.xPos,
+            yPos:position.yPos,
         });
     }
 

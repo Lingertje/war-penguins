@@ -11,15 +11,17 @@
 
             socket.emit('message', {'sender': 'Mart Linger', 'message': 'Hello World'});
 
-            socket.on('message', function (msg){
-                console.log(msg);
-            });
-
             window.onload = function () {
                 const c = document.getElementById('canvas');
                 var ctx = c.getContext('2d');
 
-                ctx.fillRect(250, 250, 20, 20);
+                socket.on('newPosition', function (data){
+                    ctx.clearRect(0, 0, 500, 500);
+                    for(let i = 0; i < data.length; i+=1) {
+                        ctx.fillRect(data[i].xPos, data[i].yPos, 25, 25);
+                    }
+                });
+
 
                 document.onkeydown = function (event) {
                     switch (event.keyCode) {
