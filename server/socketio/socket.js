@@ -19,11 +19,7 @@ exports = module.exports = (io) => {
         });
 
         socket.on('keyPress', (data) => {
-            handleKeyPress(player, data)
-                .then(newPos => {
-                    //socket.emit('newPosition', newPos);
-                })
-                .catch(err => console.log(err));
+            handleKeyPress(player, data);
         });
 
         socket.on('disconnect', () => {
@@ -47,7 +43,6 @@ function handleKeyPress(player, data) {
     }
 
     player.updatePosition(position.xPos, position.yPos);
-    return Promise.resolve(position);
 }
 
 //Send every connected socket package data 30 times a second
