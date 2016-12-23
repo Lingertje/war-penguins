@@ -21,6 +21,8 @@ exports = module.exports = (io) => {
         socket.on('disconnect', () => {
            delete SOCKET_LIST[socket.id];
            delete PLAYER_LIST[socket.id];
+
+           socket.broadcast.emit('connected', 'A user has disconnected.');
         });
     });
 };

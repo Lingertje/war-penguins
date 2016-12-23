@@ -1,9 +1,13 @@
-const app = require('express')();
+const express = require('express');
+const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 // Import files
 const socketio = require('./socketio/socket')(io);
+
+// Serve static content
+app.use(express.static('app'));
 
 // Set port for server to listen to
 app.set('port', process.env.PORT || 3000);

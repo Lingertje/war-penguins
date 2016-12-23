@@ -4,20 +4,24 @@
         <meta charset="UTF-8">
         <title>HTML5-GAME</title>
 
+        <!-- CSS-files -->
+        <link rel="stylesheet" href="public/css/main.css">
+
         <!-- JS-files -->
         <script src="../socket.io/socket.io.js"></script>
         <script>
             var socket = io();
-            var canvasWidth, canvanHeight = 500;
+            var characterImg = new Image();
 
             window.onload = function () {
                 const c = document.getElementById('canvas');
                 var ctx = c.getContext('2d');
 
                 socket.on('newPosition', function (data){
-                    ctx.clearRect(0, 0, canvasWidth, canvanHeight);
+                    ctx.clearRect(0, 0, 500, 500);
                     for(let i = 0; i < data.length; i+=1) {
-                        ctx.fillRect(data[i].xPos, data[i].yPos, 25, 25);
+                        ctx.drawImage(characterImg, data[i].xPos, data[i].yPos, 50, 50);
+                        characterImg.src = '/public/img/character.png';
                     }
                 });
 
