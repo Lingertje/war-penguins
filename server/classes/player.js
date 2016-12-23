@@ -1,4 +1,6 @@
-class Player {
+const Entity = require('./entity');
+
+class Player extends Entity {
 
     /**
      * Represents a player
@@ -7,28 +9,48 @@ class Player {
      * @param {number} xPos Position of the player on the x axis
      * @param {number} yPos Position of the player on the y axis
      */
-    constructor(id, xPos, yPos){
-        this.id = id;
-        this.xPos = xPos;
-        this.yPos = yPos;
-        this.maxSpd = 10;
-    }
+    constructor (id, xPos, yPos) {
+        super(xPos, yPos);
 
-    getPosition() {
-        return {
-            'xPos': this.xPos,
-            'yPos': this.yPos
+        this.id = id;
+        this.maxSpd = 5;
+        this.pressed = {
+            left 	: false,
+            right 	: false,
+            up 		: false,
+            down 	: false
         };
     }
 
     /**
      *
-     * @param {number} xPos Position of the player on the x axis
-     * @param {number} yPos Position of the player on the y axis
+     * @description Checks if a certain key is pressed and updates the position accordingly
      */
-    updatePosition(xPos, yPos){
-        this.xPos = xPos;
-        this.yPos = yPos;
+    updatePosition(){
+        let position = this.getPosition();
+
+        if (this.pressed.right) {
+            position.xPos += this.maxSpd;
+        }
+        if (this.pressed.left) {
+            position.xPos -= this.maxSpd;
+        }
+        if (this.pressed.up) {
+            position.yPos -= this.maxSpd;
+        }
+        if (this.pressed.down) {
+            position.yPos += this.maxSpd;
+        }
+
+        this.setPosition(position.xPos, position.yPos);
+    }
+
+    /**
+     *
+     * @description Fires with the equipped weapon
+     */
+    shoot () {
+
     }
 }
 

@@ -28,27 +28,33 @@ exports = module.exports = (io) => {
 };
 
 function handleKeyPress(player, data) {
-    let position = player.getPosition();
-
-    if ((data.inputId === 68 || data.inputId === 39) && data.state) {
-        position.xPos += player.maxSpd;
-    } else if ((data.inputId === 65 || data.inputId === 37) && data.state) {
-        position.xPos -= player.maxSpd;
-    } else if ((data.inputId === 87 || data.inputId === 38) && data.state) {
-        position.yPos -= player.maxSpd;
-    } else if ((data.inputId === 83 || data.inputId === 40) && data.state) {
-        position.yPos += player.maxSpd;
+    //Check for arrow keys and wasd keys
+    if (Object.is(data.inputId, 68) || Object.is(data.inputId, 39)) {
+        player.pressed.right = data.state;
+    }
+    if (Object.is(data.inputId, 65) || Object.is(data.inputId, 37)) {
+        player.pressed.left = data.state;
+    }
+    if (Object.is(data.inputId, 87) || Object.is(data.inputId, 38)) {
+        player.pressed.up = data.state;
+    }
+    if (Object.is(data.inputId, 83) || Object.is(data.inputId, 40)) {
+        player.pressed.down = data.state;
     }
 
-    player.updatePosition(position.xPos, position.yPos);
+    //Check for spacebar
+    if (Object.is(data.inputId, 32) && Object.is(data.state, true)) {
+        player.shoot();
+    }
 }
 
 //Send every connected socket package data 30 times a second
-setInterval(function (){
+setInterval(() => {
     var package = [];
 
-    for(var p in PLAYER_LIST){
+    for (var p in PLAYER_LIST) {
         var player = PLAYER_LIST[p];
+        player.updatePosition();
         var position = player.getPosition();
         package.push({
             id: player.id,
@@ -57,7 +63,7 @@ setInterval(function (){
         });
     }
 
-    for(var s in SOCKET_LIST){
+    for (var s in SOCKET_LIST) {
         var socket = SOCKET_LIST[s];
         socket.emit('newPosition', package);
     }
