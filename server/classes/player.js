@@ -29,16 +29,16 @@ class Player extends Entity {
     updatePosition(){
         let position = this.getPosition();
 
-        if (this.pressed.right) {
+        if (this.pressed.right && this.xPos < 450) {
             position.xPos += this.maxSpd;
         }
-        if (this.pressed.left) {
+        if (this.pressed.left && this.xPos > 0) {
             position.xPos -= this.maxSpd;
         }
-        if (this.pressed.up) {
+        if (this.pressed.up && this.yPos > 0) {
             position.yPos -= this.maxSpd;
         }
-        if (this.pressed.down) {
+        if (this.pressed.down && this.yPos < 450) {
             position.yPos += this.maxSpd;
         }
 

@@ -10,15 +10,19 @@
         <!-- JS-files -->
         <script src="../socket.io/socket.io.js"></script>
         <script>
-            var socket = io();
+            const socket = io();
             var characterImg = new Image();
 
             window.onload = function () {
+                const canvas = {
+                    width: 500,
+                    height: 500
+                }
                 const c = document.getElementById('canvas');
                 var ctx = c.getContext('2d');
 
                 socket.on('newPosition', function (data){
-                    ctx.clearRect(0, 0, 500, 500);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
                     for(let i = 0; i < data.length; i+=1) {
                         ctx.drawImage(characterImg, data[i].xPos, data[i].yPos, 50, 50);
                         characterImg.src = '/public/img/character.png';
