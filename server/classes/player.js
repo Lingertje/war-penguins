@@ -14,12 +14,15 @@ class Player extends Entity {
 
         this.id = id;
         this.maxSpd = 5;
+        this.direction = 'left';
         this.pressed = {
             left 	: false,
             right 	: false,
             up 		: false,
             down 	: false
         };
+
+
     }
 
     /**
@@ -31,9 +34,11 @@ class Player extends Entity {
 
         if (this.pressed.right && this.xPos < 450) {
             position.xPos += this.maxSpd;
+            this.direction = 'right';
         }
         if (this.pressed.left && this.xPos > 0) {
             position.xPos -= this.maxSpd;
+            this.direction = 'left';
         }
         if (this.pressed.up && this.yPos > 0) {
             position.yPos -= this.maxSpd;

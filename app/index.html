@@ -24,7 +24,12 @@
                 socket.on('newPosition', function (data){
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     for(let i = 0; i < data.length; i+=1) {
-                        ctx.drawImage(characterImg, data[i].xPos, data[i].yPos, 50, 50);
+                        if(Object.is(data[i].direction, 'right')){
+                            ctx.drawImage(characterImg, 292, 0, 292, 322, data[i].xPos, data[i].yPos, 50, 50);
+                        } else {
+                            ctx.drawImage(characterImg, 0, 0, 292, 322, data[i].xPos, data[i].yPos, 50, 50);
+                        }
+
                         characterImg.src = '/public/img/character.png';
                     }
                 });

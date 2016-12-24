@@ -58,8 +58,9 @@ setInterval(() => {
         var position = player.getPosition();
         package.push({
             id: player.id,
-            xPos:position.xPos,
-            yPos:position.yPos,
+            xPos: position.xPos,
+            yPos: position.yPos,
+            direction: player.direction
         });
     }
 
