@@ -4,7 +4,7 @@
   "description": "Multiplayer game made with HTML5 and Node.js",
   "author": "Mart Linger",
   "scripts": {
-    "start": "node server/server",
+    "start": "nodemon server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

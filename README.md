@@ -10,3 +10,7 @@ These libraries are specified in the `package.json` and can be installed with th
 * npm - v4.0.5
 * Express - v4.14.0
 * Socket.io - v1.7.2
+
+## Nodemon
+For a better developing experience this project makes us of the Nodeman dependence.
+Nodemon is an Node watcher and restarts your server on changes. Running `npm start` will run the task `nodemon server/server.js`.
