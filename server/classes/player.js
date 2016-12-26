@@ -13,6 +13,7 @@ class Player extends Entity {
         super(xPos, yPos);
 
         this.id = id;
+        this.health = Math.floor((Math.random() * 100) + 1);
         this.maxSpd = 5;
         this.direction = 'left';
         this.pressed = {
@@ -21,8 +22,6 @@ class Player extends Entity {
             up 		: false,
             down 	: false
         };
-
-
     }
 
     /**

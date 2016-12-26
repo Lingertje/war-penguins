@@ -12,5 +12,6 @@ These libraries are specified in the `package.json` and can be installed with th
 * Socket.io - v1.7.2
 
 ## Nodemon
-For a better developing experience this project makes us of the Nodeman dependence.
-Nodemon is an Node watcher and restarts your server on changes. Running `npm start` will run the task `nodemon server/server.js`.
+For a better developing experience this project makes use of the Nodeman dependence.
+Nodemon is a utility that will monitor for any changes in your source and automatically restart your server.
+Running `npm start` will run the task `nodemon server/server.js`.

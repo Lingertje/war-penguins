@@ -22,7 +22,7 @@ exports = module.exports = (io) => {
            delete SOCKET_LIST[socket.id];
            delete PLAYER_LIST[socket.id];
 
-           socket.broadcast.emit('connected', 'A user has disconnected.');
+           socket.broadcast.emit('disconnected', 'A user has disconnected.');
         });
     });
 };
@@ -60,7 +60,8 @@ setInterval(() => {
             id: player.id,
             xPos: position.xPos,
             yPos: position.yPos,
-            direction: player.direction
+            direction: player.direction,
+            health: player.health
         });
     }
 
