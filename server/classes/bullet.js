@@ -22,20 +22,28 @@ class Bullet extends Entity {
     updatePosition(){
         let position = this.getPosition();
 
-        if (this.direction === 'right' && this.xPos < 490) {
+        if (!this.direction || this.direction === 'right') {
             position.xPos += this.maxSpd;
         }
-        if (this.direction === 'left' && this.xPos > 0) {
+        if (this.direction === 'left' && this.xPos) {
             position.xPos -= this.maxSpd;
         }
-        if (this.direction === 'up' && this.yPos > 0) {
+        if (this.direction === 'up' && this.yPos) {
             position.yPos -= this.maxSpd;
         }
-        if (this.direction === 'down' && this.yPos < 490) {
+        if (this.direction === 'down' && this.yPos) {
             position.yPos += this.maxSpd;
         }
 
         this.setPosition(position.xPos, position.yPos);
+    }
+
+    isOutWindow(){
+        if (this.xPos > 490 || this.xPos < -30 || this.yPos < -30 || this.yPos > 490) {
+            return true;
+        }
+
+        return false;
     }
 }
 

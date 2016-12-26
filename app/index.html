@@ -22,24 +22,25 @@
                 var ctx = c.getContext('2d');
 
                 socket.on('newPosition', function (data){
-                    console.log(data);
                     ctx.clearRect(0, 0, canvas.width, canvas.height); //Clear the canvas
 
                     for(let i = 0; i < data.length; i+=1) {
                         var player = data[i];
                         var bullets = player.bullets;
 
-                        //Draw a healthbar
+                        // Draw a healthbar
                         ctx.fillStyle = '#b70e17';
                         ctx.fillRect(player.xPos, player.yPos - 10, player.health / 2, 5);
                         ctx.strokeStyle = '#000';
                         ctx.strokeRect(player.xPos, player.yPos - 10, 50, 5);
 
+                        // Call the function that draws the players
                         drawPlayer(player);
 
+                        // Call the function that draws the bullets the player fired
                         for (var b in bullets) {
                             var bullet = bullets[b];
-                            drawBullet(bullet)
+                            drawBullet(bullet);
                         }
 
                         characterImg.src = '/public/img/character.png';
@@ -55,8 +56,7 @@
                 }
 
                 function drawBullet (bullet) {
-                    ctx.fillRect(bullet.xPos, bullet.yPos, 10, 10);
-                    console.log(bullet);
+                    ctx.fillRect(bullet.xPos + 20, bullet.yPos + 15, 10, 10);
                 }
 
                 document.onkeydown = function (event) {

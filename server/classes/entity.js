@@ -15,7 +15,7 @@ class Entity {
         this.xPos = xPos;
         this.yPos = yPos;
         this.maxSpd = maxSpd;
-        this.direction = 'left';
+        this.direction;
     }
 
     /**

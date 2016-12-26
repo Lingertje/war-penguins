@@ -58,16 +58,13 @@ class Player extends Entity {
     updatePlayerBullets (){
         for (var b in this.bullets) {
             var bullet = this.bullets[b];
+
+            if (bullet.isOutWindow()) {
+                this.bullets.splice(Number(b), 1);
+            }
+
             bullet.updatePosition();
         }
-    }
-
-    /**
-     *
-     * @description Fires with the equipped weapon
-     */
-    shoot () {
-
     }
 }
 
