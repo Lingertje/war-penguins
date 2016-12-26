@@ -8,20 +8,20 @@ class Player extends Entity {
      * @param {string} id The player's id (Most of the time this is the socket id)
      * @param {number} xPos Position of the player on the x axis
      * @param {number} yPos Position of the player on the y axis
+     * @param {number} maxSpd The maximum of the player
      */
-    constructor (id, xPos, yPos) {
-        super(xPos, yPos);
+    constructor (id, xPos, yPos, maxSpd) {
+        super(xPos, yPos, maxSpd);
 
         this.id = id;
         this.health = Math.floor((Math.random() * 100) + 1);
-        this.maxSpd = 5;
-        this.direction = 'left';
         this.pressed = {
             left 	: false,
             right 	: false,
             up 		: false,
             down 	: false
         };
+        this.bullets = [];
     }
 
     /**
@@ -41,12 +41,25 @@ class Player extends Entity {
         }
         if (this.pressed.up && this.yPos > 0) {
             position.yPos -= this.maxSpd;
+            this.direction = 'up';
         }
         if (this.pressed.down && this.yPos < 450) {
             position.yPos += this.maxSpd;
+            this.direction = 'down';
         }
 
         this.setPosition(position.xPos, position.yPos);
+    }
+
+    /**
+     *
+     * @description Updates the bullets that a player has fired
+     */
+    updatePlayerBullets (){
+        for (var b in this.bullets) {
+            var bullet = this.bullets[b];
+            bullet.updatePosition();
+        }
     }
 
     /**

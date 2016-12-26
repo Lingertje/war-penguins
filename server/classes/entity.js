@@ -3,16 +3,19 @@ class Entity {
     /**
      * Abstract class that represents an Entity
      * @constructor
-     * @param {number} xPos Position of the player on the x axis
-     * @param {number} yPos Position of the player on the y axis
+     * @param {number} xPos Position of the entity on the x axis
+     * @param {number} yPos Position of the entity on the y axis
+     * @param {number} maxSpd The maximum of the entity
      */
-    constructor (xPos, yPos) {
+    constructor (xPos, yPos, maxSpd) {
         if(new.target.name === 'Entity'){
             throw new TypeError('Abstract class \'Entity\' cannot be instantiated directly.');
         }
 
         this.xPos = xPos;
         this.yPos = yPos;
+        this.maxSpd = maxSpd;
+        this.direction = 'left';
     }
 
     /**
@@ -28,8 +31,8 @@ class Entity {
 
     /**
      *
-     * @param {number} xPos Position of the player on the x axis
-     * @param {number} yPos Position of the player on the y axis
+     * @param {number} xPos Position of the entity on the x axis
+     * @param {number} yPos Position of the entity on the y axis
      * @description Set the current position (x and y axis) of the entity
      */
     setPosition (xPos, yPos) {

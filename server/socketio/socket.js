@@ -1,14 +1,18 @@
 const Player = require('../classes/player');
+const Bullet = require('../classes/bullet');
 
 let SOCKET_LIST = {};
 let PLAYER_LIST = {};
+let BULLET_LIST = [];
 
 exports = module.exports = (io) => {
     io.on('connection', (socket) => {
         SOCKET_LIST[socket.id] = socket;
 
         // Instantiate new player object and add player to PLAYER_LIST
-        var player = new Player(socket.id, Math.floor((Math.random() * 500) + 1), Math.floor((Math.random() * 500) + 1));
+        var xPos = Math.floor((Math.random() * 500) + 1);
+        var yPos = Math.floor((Math.random() * 500) + 1);
+        var player = new Player(socket.id, xPos, yPos, 5);
         PLAYER_LIST[socket.id] = player;
 
         //Emit to everyone except the current socket that a user has connected
@@ -28,6 +32,7 @@ exports = module.exports = (io) => {
 };
 
 function handleKeyPress(player, data) {
+
     //Check for arrow keys and wasd keys
     if (Object.is(data.inputId, 68) || Object.is(data.inputId, 39)) {
         player.pressed.right = data.state;
@@ -44,7 +49,11 @@ function handleKeyPress(player, data) {
 
     //Check for spacebar
     if (Object.is(data.inputId, 32) && Object.is(data.state, true)) {
-        player.shoot();
+        var position = player.getPosition();
+        var bullet = new Bullet(0, position.xPos, position.yPos, 10);
+        bullet.direction = player.direction;
+
+        player.bullets.push(bullet);
     }
 }
 
@@ -55,13 +64,15 @@ setInterval(() => {
     for (var p in PLAYER_LIST) {
         var player = PLAYER_LIST[p];
         player.updatePosition();
+        player.updatePlayerBullets();
         var position = player.getPosition();
         package.push({
             id: player.id,
             xPos: position.xPos,
             yPos: position.yPos,
             direction: player.direction,
-            health: player.health
+            health: player.health,
+            bullets: player.bullets
         });
     }
 

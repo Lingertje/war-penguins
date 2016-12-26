@@ -22,10 +22,12 @@
                 var ctx = c.getContext('2d');
 
                 socket.on('newPosition', function (data){
+                    console.log(data);
                     ctx.clearRect(0, 0, canvas.width, canvas.height); //Clear the canvas
 
                     for(let i = 0; i < data.length; i+=1) {
                         var player = data[i];
+                        var bullets = player.bullets;
 
                         //Draw a healthbar
                         ctx.fillStyle = '#b70e17';
@@ -33,15 +35,29 @@
                         ctx.strokeStyle = '#000';
                         ctx.strokeRect(player.xPos, player.yPos - 10, 50, 5);
 
-                        if(Object.is(player.direction, 'right')){
-                            ctx.drawImage(characterImg, 292, 0, 292, 322, player.xPos,player.yPos, 50, 50);
-                        } else {
-                            ctx.drawImage(characterImg, 0, 0, 292, 322, player.xPos, player.yPos, 50, 50);
+                        drawPlayer(player);
+
+                        for (var b in bullets) {
+                            var bullet = bullets[b];
+                            drawBullet(bullet)
                         }
 
                         characterImg.src = '/public/img/character.png';
                     }
                 });
+
+                function drawPlayer (player) {
+                    if(Object.is(player.direction, 'right')){
+                        ctx.drawImage(characterImg, 292, 0, 292, 322, player.xPos,player.yPos, 50, 50);
+                    } else {
+                        ctx.drawImage(characterImg, 0, 0, 292, 322, player.xPos, player.yPos, 50, 50);
+                    }
+                }
+
+                function drawBullet (bullet) {
+                    ctx.fillRect(bullet.xPos, bullet.yPos, 10, 10);
+                    console.log(bullet);
+                }
 
                 document.onkeydown = function (event) {
                     switch (event.keyCode) {
@@ -56,7 +72,8 @@
                         case 32:
                             socket.emit('keyPress', { inputId: event.keyCode, state: true });
                     }
-                }
+                };
+
                 document.onkeyup = function (event) {
                     switch (event.keyCode) {
                         case 65:
@@ -71,7 +88,7 @@
                             socket.emit('keyPress', { inputId: event.keyCode, state: false });
                     }
                 }
-            }
+            };
         </script>
     </head>
     <body>
