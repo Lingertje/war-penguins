@@ -49,14 +49,14 @@
 
                 function drawPlayer (player) {
                     if(Object.is(player.direction, 'right')){
-                        ctx.drawImage(characterImg, 292, 0, 292, 322, player.xPos,player.yPos, 50, 50);
+                        ctx.drawImage(characterImg, 292, 0, 292, 322, player.xPos,player.yPos, player.width, player.height);
                     } else {
-                        ctx.drawImage(characterImg, 0, 0, 292, 322, player.xPos, player.yPos, 50, 50);
+                        ctx.drawImage(characterImg, 0, 0, 292, 322, player.xPos, player.yPos, player.width, player.height);
                     }
                 }
 
                 function drawBullet (bullet) {
-                    ctx.fillRect(bullet.xPos + 20, bullet.yPos + 15, 10, 10);
+                    ctx.fillRect(bullet.xPos + 20, bullet.yPos + 15, bullet.width, bullet.height);
                 }
 
                 document.onkeydown = function (event) {

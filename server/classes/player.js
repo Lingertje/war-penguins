@@ -14,6 +14,8 @@ class Player extends Entity {
         super(xPos, yPos, maxSpd);
 
         this.id = id;
+        this.width = 50;
+        this.height = 50;
         this.health = Math.floor((Math.random() * 100) + 1);
         this.pressed = {
             left 	: false,
@@ -31,7 +33,7 @@ class Player extends Entity {
     updatePosition(){
         let position = this.getPosition();
 
-        if (this.pressed.right && this.xPos < 450) {
+        if (this.pressed.right && this.xPos + this.width < 500) {
             position.xPos += this.maxSpd;
             this.direction = 'right';
         }
@@ -43,7 +45,7 @@ class Player extends Entity {
             position.yPos -= this.maxSpd;
             this.direction = 'up';
         }
-        if (this.pressed.down && this.yPos < 450) {
+        if (this.pressed.down && this.yPos + this.height < 500) {
             position.yPos += this.maxSpd;
             this.direction = 'down';
         }

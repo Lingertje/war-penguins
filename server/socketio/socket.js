@@ -66,14 +66,7 @@ setInterval(() => {
         player.updatePosition();
         player.updatePlayerBullets();
         var position = player.getPosition();
-        package.push({
-            id: player.id,
-            xPos: position.xPos,
-            yPos: position.yPos,
-            direction: player.direction,
-            health: player.health,
-            bullets: player.bullets
-        });
+        package.push(player);
     }
 
     for (var s in SOCKET_LIST) {
