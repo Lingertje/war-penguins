@@ -16,7 +16,7 @@ class Player extends Entity {
         this.id = id;
         this.width = 50;
         this.height = 50;
-        this.health = Math.floor((Math.random() * 100) + 1);
+        this.health = 100;
         this.pressed = {
             left 	: false,
             right 	: false,

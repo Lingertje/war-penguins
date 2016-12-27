@@ -12,6 +12,7 @@
         <script>
             const socket = io();
             var characterImg = new Image();
+            var playerSelf;
 
             window.onload = function () {
                 const canvas = {
@@ -21,7 +22,11 @@
                 const c = document.getElementById('canvas');
                 var ctx = c.getContext('2d');
 
-                socket.on('updatePosition', function (players){
+                socket.on('self', data => {
+                    playerSelf = data;
+                });
+
+                socket.on('updatePosition', players => {
                     ctx.clearRect(0, 0, canvas.width, canvas.height); //Clear the canvas
 
                     players.forEach( player => {
@@ -38,7 +43,7 @@
 
                         // Call the function that draws the bullets the player fired
                         bullets.forEach( bullet => {
-                            handleCollision(bullets, players);
+                            handleCollision(bullet, players);
                             drawBullet(bullet);
                         });
 
@@ -58,15 +63,13 @@
                     ctx.fillRect(bullet.xPos + 20, bullet.yPos + 15, bullet.width, bullet.height);
                 }
 
-                function handleCollision (bullets, players) {
-                    bullets.forEach( bullet => {
-                        players.forEach( player => {
-                            if (bullet.playerId !== player.id) {
-                                if (collides(bullet, player)) {
-                                    socket.emit('playerHit', { player: player, bullet: bullet })
-                                }
+                function handleCollision (bullet, players) {
+                    players.forEach( player => {
+                        if (playerSelf['id'] !== player.id && player.id !== bullet.playerId) {
+                            if (collides(bullet, player)) {
+                                socket.emit('playerHit', { player: player, bullet: bullet });
                             }
-                        });
+                        }
                     });
                 }
 

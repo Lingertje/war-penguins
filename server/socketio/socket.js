@@ -14,6 +14,8 @@ exports = module.exports = (io) => {
         var player = new Player(socket.id, xPos, yPos, 5);
         PLAYER_LIST[socket.id] = player;
 
+        socket.emit('self', player);
+
         //Emit to everyone except the current socket that a user has connected
         socket.broadcast.emit('connected', 'A user has connected.');
 
@@ -25,7 +27,9 @@ exports = module.exports = (io) => {
             var player = PLAYER_LIST[data.player.id];
             var bullet = data.bullet;
 
-            player.takeDamage(bullet.dmg);
+            if(player.takeDamage(bullet.dmg) < 0){
+                delete PLAYER_LIST[player.id];
+            }
         });
 
         socket.on('disconnect', () => {
