@@ -21,11 +21,10 @@
                 const c = document.getElementById('canvas');
                 var ctx = c.getContext('2d');
 
-                socket.on('newPosition', function (data){
+                socket.on('updatePosition', function (players){
                     ctx.clearRect(0, 0, canvas.width, canvas.height); //Clear the canvas
 
-                    for(let i = 0; i < data.length; i+=1) {
-                        var player = data[i];
+                    players.forEach( player => {
                         var bullets = player.bullets;
 
                         // Draw a healthbar
@@ -38,13 +37,13 @@
                         drawPlayer(player);
 
                         // Call the function that draws the bullets the player fired
-                        for (var b in bullets) {
-                            var bullet = bullets[b];
+                        bullets.forEach( bullet => {
+                            handleCollision(bullets, players);
                             drawBullet(bullet);
-                        }
+                        });
 
                         characterImg.src = '/public/img/character.png';
-                    }
+                    });
                 });
 
                 function drawPlayer (player) {
@@ -57,6 +56,25 @@
 
                 function drawBullet (bullet) {
                     ctx.fillRect(bullet.xPos + 20, bullet.yPos + 15, bullet.width, bullet.height);
+                }
+
+                function handleCollision (bullets, players) {
+                    bullets.forEach( bullet => {
+                        players.forEach( player => {
+                            if (bullet.playerId !== player.id) {
+                                if (collides(bullet, player)) {
+                                    socket.emit('playerHit', { player: player, bullet: bullet })
+                                }
+                            }
+                        });
+                    });
+                }
+
+                function collides (bullet, player) {
+                    return bullet.xPos < player.xPos + player.width &&
+                        bullet.xPos + bullet.width > player.xPos &&
+                        bullet.yPos < player.yPos + player.height &&
+                        bullet.yPos + bullet.height > player.yPos;
                 }
 
                 document.onkeydown = function (event) {

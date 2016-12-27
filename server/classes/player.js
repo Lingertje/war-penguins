@@ -30,7 +30,7 @@ class Player extends Entity {
      *
      * @description Checks if a certain key is pressed and updates the position accordingly
      */
-    updatePosition(){
+    updatePosition () {
         let position = this.getPosition();
 
         if (this.pressed.right && this.xPos + this.width < 500) {
@@ -57,7 +57,7 @@ class Player extends Entity {
      *
      * @description Updates the bullets that a player has fired
      */
-    updatePlayerBullets (){
+    updatePlayerBullets () {
         for (var b in this.bullets) {
             var bullet = this.bullets[b];
 
@@ -67,6 +67,16 @@ class Player extends Entity {
 
             bullet.updatePosition();
         }
+    }
+
+    /**
+     * @param dmg The ammount of damage the hit did
+     * @description Lowers health of the player on hit
+     * @returns The current health of the player
+     */
+    takeDamage (dmg) {
+        return this.health -= dmg;
+
     }
 }
 

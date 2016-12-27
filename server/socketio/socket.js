@@ -3,7 +3,6 @@ const Bullet = require('../classes/bullet');
 
 let SOCKET_LIST = {};
 let PLAYER_LIST = {};
-let BULLET_LIST = [];
 
 exports = module.exports = (io) => {
     io.on('connection', (socket) => {
@@ -18,8 +17,15 @@ exports = module.exports = (io) => {
         //Emit to everyone except the current socket that a user has connected
         socket.broadcast.emit('connected', 'A user has connected.');
 
-        socket.on('keyPress', (data) => {
+        socket.on('keyPress', data => {
             handleKeyPress(player, data);
+        });
+
+        socket.on('playerHit', data => {
+            var player = PLAYER_LIST[data.player.id];
+            var bullet = data.bullet;
+
+            player.takeDamage(bullet.dmg);
         });
 
         socket.on('disconnect', () => {
@@ -50,7 +56,7 @@ function handleKeyPress(player, data) {
     //Check for spacebar
     if (Object.is(data.inputId, 32) && Object.is(data.state, true)) {
         var position = player.getPosition();
-        var bullet = new Bullet(0, position.xPos, position.yPos, 10);
+        var bullet = new Bullet(0, player.id, position.xPos, position.yPos, 10);
         bullet.direction = player.direction;
 
         player.bullets.push(bullet);
@@ -65,13 +71,12 @@ setInterval(() => {
         var player = PLAYER_LIST[p];
         player.updatePosition();
         player.updatePlayerBullets();
-        var position = player.getPosition();
         package.push(player);
     }
 
     for (var s in SOCKET_LIST) {
         var socket = SOCKET_LIST[s];
-        socket.emit('newPosition', package);
+        socket.emit('updatePosition', package);
     }
 
 }, 1000 / 30);

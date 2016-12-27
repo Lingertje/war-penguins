@@ -9,10 +9,12 @@ const Entity = require('./entity');
  * @param {number} maxSpd The maximum of the bullet
  */
 class Bullet extends Entity {
-    constructor (id, xPos, yPos, maxSpd) {
+    constructor (id, playerId, xPos, yPos, maxSpd) {
         super(xPos, yPos, maxSpd);
 
         this.id = id;
+        this.playerId = playerId;
+        this.dmg = 10;
         this.width = 10;
         this.height = 10;
     }
@@ -41,7 +43,7 @@ class Bullet extends Entity {
     }
 
     isOutWindow(){
-        if (this.xPos > 490 || this.xPos < -30 || this.yPos < -30 || this.yPos > 490) {
+        if (this.xPos + this.width > 500 || this.xPos < -30 || this.yPos < -30 || this.yPos + this.width > 500) {
             return true;
         }
 
