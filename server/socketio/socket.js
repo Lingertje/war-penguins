@@ -25,9 +25,11 @@ exports = module.exports = (io) => {
 
         socket.on('playerHit', data => {
             var player = PLAYER_LIST[data.player.id];
+            var bulletPlayer = PLAYER_LIST[data.bullet.playerId];
             var bullet = data.bullet;
 
             if(player.takeDamage(bullet.dmg) < 0){
+                bulletPlayer.deletePlayerBullet();
                 delete PLAYER_LIST[player.id];
             }
         });

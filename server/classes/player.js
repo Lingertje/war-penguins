@@ -70,6 +70,14 @@ class Player extends Entity {
     }
 
     /**
+     *
+     * @description Remove a bullet from a player
+     */
+    deletePlayerBullet () {
+        console.log(this.bullets);
+    }
+
+    /**
      * @param dmg The ammount of damage the hit did
      * @description Lowers health of the player on hit
      * @returns The current health of the player
