@@ -28,10 +28,11 @@ exports = module.exports = (io) => {
             var bulletPlayer = PLAYER_LIST[data.bullet.playerId];
             var bullet = data.bullet;
 
-            if(player.takeDamage(bullet.dmg) < 0){
-                bulletPlayer.deletePlayerBullet();
+            if(player.takeDamage(bullet.dmg) <= 0){
                 delete PLAYER_LIST[player.id];
             }
+
+            bulletPlayer.deletePlayerBullet(data.bullet.id); //Remove bullet from the player that fired it
         });
 
         socket.on('disconnect', () => {

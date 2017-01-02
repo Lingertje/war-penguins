@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const Entity = require('./entity');
 
 class Player extends Entity {
@@ -62,7 +63,7 @@ class Player extends Entity {
             var bullet = this.bullets[b];
 
             if (bullet.isOutWindow()) {
-                this.bullets.splice(Number(b), 1);
+                this.deletePlayerBullet(bullet.id);
             }
 
             bullet.updatePosition();
@@ -75,7 +76,11 @@ class Player extends Entity {
      * @description Remove a bullet from a player
      */
     deletePlayerBullet (bulletId) {
-        console.log(this.bullets);
+        const bullet = _.findIndex(this.bullets, b => {
+                return b.id == bulletId;
+            });
+
+        this.bullets.splice(bullet);
     }
 
     /**
