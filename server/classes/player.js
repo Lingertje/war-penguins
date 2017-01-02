@@ -80,7 +80,7 @@ class Player extends Entity {
                 return b.id == bulletId;
             });
 
-        this.bullets.splice(bullet);
+        return Promise.resolve(this.bullets.splice(bullet, 1)); //Remove bullet from array
     }
 
     /**
@@ -90,7 +90,6 @@ class Player extends Entity {
      */
     takeDamage (dmg) {
         return this.health -= dmg;
-
     }
 }
 
