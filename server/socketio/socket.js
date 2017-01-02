@@ -28,7 +28,7 @@ exports = module.exports = (io) => {
             var bulletPlayer = PLAYER_LIST[data.bullet.playerId];
             var bullet = data.bullet;
 
-            if(player.takeDamage(bullet.dmg) <= 0){
+            if(player && player.takeDamage(bullet.dmg) <= 0){
                 delete PLAYER_LIST[player.id];
             }
 
@@ -63,11 +63,21 @@ function handleKeyPress(player, data) {
     //Check for spacebar
     if (Object.is(data.inputId, 32) && Object.is(data.state, true)) {
         var position = player.getPosition();
-        var bullet = new Bullet(0, player.id, position.xPos, position.yPos, 10);
+        var bullet = new Bullet(guid(), player.id, position.xPos, position.yPos, 10);
         bullet.direction = player.direction;
 
         player.bullets.push(bullet);
     }
+}
+
+function guid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
 }
 
 //Send every connected socket package data 30 times a second

@@ -13,6 +13,7 @@ class Bullet extends Entity {
         super(xPos, yPos, maxSpd);
 
         this.id = id;
+        this.active = true;
         this.playerId = playerId;
         this.dmg = 10;
         this.width = 10;

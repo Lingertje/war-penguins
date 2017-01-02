@@ -65,7 +65,7 @@
 
                 function handleCollision (bullet, players) {
                     players.forEach( player => {
-                        if (playerSelf['id'] !== player.id && player.id !== bullet.playerId) {
+                        if (playerSelf['id'] === player.id && player.id !== bullet.playerId) {
                             if (collides(bullet, player)) {
                                 socket.emit('playerHit', { player: player, bullet: bullet });
                             }
