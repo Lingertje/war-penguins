@@ -71,9 +71,10 @@ class Player extends Entity {
 
     /**
      *
+     * @param Id of the bullet that needs to be removed
      * @description Remove a bullet from a player
      */
-    deletePlayerBullet () {
+    deletePlayerBullet (bulletId) {
         console.log(this.bullets);
     }
 
