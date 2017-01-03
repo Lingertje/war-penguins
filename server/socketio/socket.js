@@ -9,9 +9,11 @@ exports = module.exports = (io) => {
         SOCKET_LIST[socket.id] = socket;
 
         // Instantiate new player object and add player to PLAYER_LIST
-        var xPos = Math.floor((Math.random() * 500) + 1);
-        var yPos = Math.floor((Math.random() * 500) + 1);
-        var player = new Player(socket.id, xPos, yPos, 5);
+        var player = new Player(socket.id, 0, 0, 5);
+        var xPos = Math.floor((Math.random() * (500 - player.width)) + 1);
+        var yPos = Math.floor((Math.random() * (500 - player.height)) + 1);
+        player.setPosition(xPos, yPos);
+
         PLAYER_LIST[socket.id] = player;
 
         socket.emit('self', player);

@@ -73,11 +73,11 @@
                     });
                 }
 
-                function collides (bullet, player) {
-                    return bullet.xPos < player.xPos + player.width &&
-                        bullet.xPos + bullet.width > player.xPos &&
-                        bullet.yPos < player.yPos + player.height &&
-                        bullet.yPos + bullet.height > player.yPos;
+                function collides (object1, object2) {
+                    return object1.xPos < object2.xPos + object2.width &&
+                        object1.xPos + object1.width > object2.xPos &&
+                        object1.yPos < object2.yPos + object2.height &&
+                        object1.yPos + object1.height > object2.yPos;
                 }
 
                 document.onkeydown = function (event) {
