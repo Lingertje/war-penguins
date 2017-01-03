@@ -12,6 +12,7 @@
         <script>
             const socket = io();
             var characterImg = new Image();
+            var characterSelf = new Image();
             var playerSelf;
 
             window.onload = function () {
@@ -39,7 +40,11 @@
                         ctx.strokeRect(player.xPos, player.yPos - 10, 50, 5);
 
                         // Call the function that draws the players
-                        drawPlayer(player);
+                        if (Object.is(player.id, playerSelf.id)) {
+                            drawSelf(player);
+                        } else {
+                            drawPlayer(player);
+                        }
 
                         // Call the function that draws the bullets the player fired
                         bullets.forEach( bullet => {
@@ -48,6 +53,7 @@
                         });
 
                         characterImg.src = '/public/img/character.png';
+                        characterSelf.src = '/public/img/character_self.png';
                     });
                 });
 
@@ -56,6 +62,14 @@
                         ctx.drawImage(characterImg, 292, 0, 292, 322, player.xPos,player.yPos, player.width, player.height);
                     } else {
                         ctx.drawImage(characterImg, 0, 0, 292, 322, player.xPos, player.yPos, player.width, player.height);
+                    }
+                }
+
+                function drawSelf (player) {
+                    if(Object.is(player.direction, 'right')){
+                        ctx.drawImage(characterSelf, 292, 0, 292, 322, player.xPos,player.yPos, player.width, player.height);
+                    } else {
+                        ctx.drawImage(characterSelf, 0, 0, 292, 322, player.xPos, player.yPos, player.width, player.height);
                     }
                 }
 
