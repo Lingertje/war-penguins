@@ -66,12 +66,16 @@ function handleKeyPress(player, data) {
     }
 
     //Check for spacebar and fire bullet (player can't shoot while sprinting)
-    if (Object.is(data.inputId, 32) && Object.is(data.state, true) && Object.is(player.pressed.sprint, false)) {
-        var position = player.getPosition();
-        var bullet = new Bullet(guid(), player.id, position.xPos, position.yPos, 10);
-        bullet.direction = player.direction;
+    if (Object.is(data.inputId, 32) && Object.is(player.pressed.sprint, false)) {
+        if (data.state && !player.pressed.shooting) {
+            var position = player.getPosition();
+            var bullet = new Bullet(guid(), player.id, position.xPos, position.yPos, 10);
+            bullet.direction = player.direction;
 
-        player.bullets.push(bullet);
+            player.bullets.push(bullet);
+        }
+
+        player.pressed.shooting = data.state;
     }
 
     //Check for shift

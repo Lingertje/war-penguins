@@ -23,7 +23,8 @@ class Player extends Entity {
             right 	: false,
             up 		: false,
             down 	: false,
-            sprint  : false
+            sprint  : false,
+            shooting: false
         };
         this.bullets = [];
     }
