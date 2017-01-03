@@ -38,7 +38,7 @@ class Player extends Entity {
         let maxSpd = this.maxSpd;
 
         if(this.pressed.sprint){
-            maxSpd *= 1.8; //Higher max speed when sprint is pressed
+            maxSpd *= 1.6; //Higher max speed when sprint is pressed
         }
 
         if (this.pressed.right && this.xPos + this.width < 500) {
