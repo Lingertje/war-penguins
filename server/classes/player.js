@@ -22,7 +22,8 @@ class Player extends Entity {
             left 	: false,
             right 	: false,
             up 		: false,
-            down 	: false
+            down 	: false,
+            sprint  : false
         };
         this.bullets = [];
     }
@@ -33,21 +34,26 @@ class Player extends Entity {
      */
     updatePosition () {
         let position = this.getPosition();
+        let maxSpd = this.maxSpd;
+
+        if(this.pressed.sprint){
+            maxSpd *= 1.8; //Higher max speed when sprint is pressed
+        }
 
         if (this.pressed.right && this.xPos + this.width < 500) {
-            position.xPos += this.maxSpd;
+            position.xPos += maxSpd;
             this.direction = 'right';
         }
         if (this.pressed.left && this.xPos > 0) {
-            position.xPos -= this.maxSpd;
+            position.xPos -= maxSpd;
             this.direction = 'left';
         }
         if (this.pressed.up && this.yPos > 0) {
-            position.yPos -= this.maxSpd;
+            position.yPos -= maxSpd;
             this.direction = 'up';
         }
         if (this.pressed.down && this.yPos + this.height < 500) {
-            position.yPos += this.maxSpd;
+            position.yPos += maxSpd;
             this.direction = 'down';
         }
 
@@ -76,9 +82,7 @@ class Player extends Entity {
      * @description Remove a bullet from a player
      */
     deletePlayerBullet (bulletId) {
-        const bullet = _.findIndex(this.bullets, b => {
-                return b.id == bulletId;
-            });
+        const bullet = _.findIndex(this.bullets, { 'id': bulletId });
 
         return Promise.resolve(this.bullets.splice(bullet, 1)); //Remove bullet from array
     }

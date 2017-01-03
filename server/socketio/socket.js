@@ -28,14 +28,14 @@ exports = module.exports = (io) => {
             var shooter = PLAYER_LIST[data.bullet.playerId];
             var bullet = data.bullet;
 
-            if(player && player.health <= 0){
-                delete PLAYER_LIST[player.id];
-            }
-
             shooter.deletePlayerBullet(data.bullet.id)
                 .then(result => {
                     if (result.length) {
                         player.takeDamage(bullet.dmg)
+
+                        if(player && player.health <= 0){
+                            delete PLAYER_LIST[player.id];
+                        }
                     }
                 }); //Remove bullet from the player that fired it
         });
@@ -65,16 +65,22 @@ function handleKeyPress(player, data) {
         player.pressed.down = data.state;
     }
 
-    //Check for spacebar
-    if (Object.is(data.inputId, 32) && Object.is(data.state, true)) {
+    //Check for spacebar and fire bullet (player can't shoot while sprinting)
+    if (Object.is(data.inputId, 32) && Object.is(data.state, true) && Object.is(player.pressed.sprint, false)) {
         var position = player.getPosition();
         var bullet = new Bullet(guid(), player.id, position.xPos, position.yPos, 10);
         bullet.direction = player.direction;
 
         player.bullets.push(bullet);
     }
+
+    //Check for shift
+    if (Object.is(data.inputId, 16)) {
+        player.pressed.sprint = data.state;
+    }
 }
 
+//Generates a random ID
 function guid() {
     function s4() {
         return Math.floor((1 + Math.random()) * 0x10000)
