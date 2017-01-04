@@ -22,7 +22,7 @@ exports = module.exports = (io) => {
         socket.broadcast.emit('connected', 'A user has connected.');
 
         socket.on('keyPress', data => {
-            handleKeyPress(player, data);
+            handleKeyPress(player, data, io);
         });
 
         socket.on('playerHit', data => {
@@ -51,7 +51,7 @@ exports = module.exports = (io) => {
     });
 };
 
-function handleKeyPress(player, data) {
+function handleKeyPress(player, data, io) {
 
     //Check for arrow keys and wasd keys
     if (Object.is(data.inputId, 68) || Object.is(data.inputId, 39)) {
@@ -70,11 +70,12 @@ function handleKeyPress(player, data) {
     //Check for spacebar and fire bullet (player can't shoot while sprinting)
     if (Object.is(data.inputId, 32) && Object.is(player.pressed.sprint, false)) {
         if (data.state && !player.pressed.shooting) {
-            var position = player.getPosition();
-            var bullet = new Bullet(guid(), player.id, position.xPos, position.yPos, 10);
+            let position = player.getPosition();
+            let bullet = new Bullet(guid(), player.id, position.xPos, position.yPos, 10);
             bullet.direction = player.direction;
 
             player.bullets.push(bullet);
+            io.sockets.emit('gunshot', true);
         }
 
         player.pressed.shooting = data.state;
