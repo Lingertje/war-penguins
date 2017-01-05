@@ -27,8 +27,8 @@
                     playerSelf = data;
                 });
 
-                socket.on('gunshot', () => {
-                    playGunshot();
+                socket.on('gunshot', data => {
+                    playGunshot(data);
                 })
 
                 socket.on('updatePosition', players => {
@@ -45,7 +45,8 @@
 
                         // Call the function that draws the players
                         if (Object.is(player.id, playerSelf.id)) {
-                            drawSelf(player);
+                            playerSelf = player;
+                            drawSelf(playerSelf);
                         } else {
                             drawPlayer(player);
                         }
@@ -98,9 +99,11 @@
                         object1.yPos + object1.height > object2.yPos;
                 }
 
-                function playGunshot(){
+                function playGunshot(position){
                     let gunshot = new Audio("public/audio/gunshot.wav");
-                    gunshot.volume = .4;
+                    let distance = Math.abs(position.xPos - playerSelf.xPos) + Math.abs(position.yPos - playerSelf.yPos);
+                    let volume = (1000 - distance) / 1000;
+                    gunshot.volume = Math.round(volume * 10) / 10;
                     gunshot.play();
                 }
 

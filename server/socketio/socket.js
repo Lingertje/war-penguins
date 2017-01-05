@@ -75,7 +75,7 @@ function handleKeyPress(player, data, io) {
             bullet.direction = player.direction;
 
             player.bullets.push(bullet);
-            io.sockets.emit('gunshot', true);
+            io.sockets.emit('gunshot', {xPos: player.xPos, yPos: player.yPos});
         }
 
         player.pressed.shooting = data.state;
