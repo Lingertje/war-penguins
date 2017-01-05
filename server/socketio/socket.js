@@ -1,4 +1,5 @@
 const Player = require('../classes/player');
+const Weapon = require('../classes/weapon');
 const Bullet = require('../classes/bullet');
 
 let SOCKET_LIST = {};
@@ -9,7 +10,8 @@ exports = module.exports = (io) => {
         SOCKET_LIST[socket.id] = socket;
 
         // Instantiate new player object and add player to PLAYER_LIST
-        var player = new Player(socket.id, 0, 0, 5);
+        var weapon = new Weapon(guid(), 30);
+        var player = new Player(socket.id, 0, 0, 5, weapon);
         var xPos = Math.floor((Math.random() * (500 - player.width)) + 1);
         var yPos = Math.floor((Math.random() * (500 - player.height)) + 1);
         player.setPosition(xPos, yPos);

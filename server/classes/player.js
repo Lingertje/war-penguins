@@ -11,7 +11,7 @@ class Player extends Entity {
      * @param {number} yPos Position of the player on the y axis
      * @param {number} maxSpd The maximum of the player
      */
-    constructor (id, xPos, yPos, maxSpd) {
+    constructor (id, xPos, yPos, maxSpd, weapon) {
         super(xPos, yPos, maxSpd);
 
         this.id = id;
@@ -26,6 +26,7 @@ class Player extends Entity {
             sprint  : false,
             shooting: false
         };
+        this.weapon = weapon;
         this.bullets = [];
     }
 
