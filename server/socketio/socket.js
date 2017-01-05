@@ -54,6 +54,7 @@ exports = module.exports = (io) => {
 };
 
 function handleKeyPress(player, data, io) {
+    let weapon = player.weapon;
 
     //Check for arrow keys and wasd keys
     if (Object.is(data.inputId, 68) || Object.is(data.inputId, 39)) {
@@ -74,8 +75,8 @@ function handleKeyPress(player, data, io) {
         if (data.state && !player.pressed.shooting) {
             let position = player.getPosition();
 
-            if(player.weapon.getBulletsInMag() && !player.weapon.locked) {
-                let bullet = player.weapon.shoot(guid(), player.id, position.xPos, position.yPos, 10);
+            if(weapon.getBulletsInMag() && !weapon.locked) {
+                let bullet = weapon.shoot(guid(), player.id, position.xPos, position.yPos, 10);
                 bullet.direction = player.direction;
 
                 player.bullets.push(bullet);
@@ -95,12 +96,12 @@ function handleKeyPress(player, data, io) {
 
     //Check for r (reload)
     if (Object.is(data.inputId, 82)) {
-        if(data.state && !player.weapon.pressed.reload && !player.weapon.locked) {
-            player.weapon.reload();
+        if(data.state && !weapon.pressed.reload && weapon.bulletsInMag !== 30 && !weapon.locked) {
+            weapon.reload();
             io.sockets.emit('reload', {fileName: 'reload.wav', xPos: player.xPos, yPos: player.yPos});
         }
 
-        player.weapon.pressed.reload = data.state;
+        weapon.pressed.reload = data.state;
     }
 }
 
