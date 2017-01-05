@@ -28,13 +28,15 @@
                 });
 
                 socket.on('gunshot', data => {
-                    playGunshot(data);
+                    playAudio(data);
                 });
 
-                socket.on('reload', () => {
-                    let reload = new Audio("public/audio/reload.wav");
-                    reload.volume = 0.5;
-                    reload.play();
+                socket.on('emptyShot', data => {
+                    playAudio(data);
+                });
+
+                socket.on('reload', data => {
+                    playAudio(data);
                 });
 
                 socket.on('updatePosition', players => {
@@ -105,8 +107,8 @@
                         object1.yPos + object1.height > object2.yPos;
                 }
 
-                function playGunshot(position){
-                    let gunshot = new Audio("public/audio/gunshot.wav");
+                function playAudio(position){
+                    let gunshot = new Audio(`public/audio/${position.fileName}`);
                     let distance = Math.abs(position.xPos - playerSelf.xPos) + Math.abs(position.yPos - playerSelf.yPos);
                     let volume = (1000 - distance) / 1000;
 

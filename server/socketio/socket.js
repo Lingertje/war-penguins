@@ -79,7 +79,9 @@ function handleKeyPress(player, data, io) {
                 bullet.direction = player.direction;
 
                 player.bullets.push(bullet);
-                io.sockets.emit('gunshot', {xPos: player.xPos, yPos: player.yPos});
+                io.sockets.emit('gunshot', {fileName: 'gunshot.wav', xPos: player.xPos, yPos: player.yPos});
+            } else {
+                io.sockets.emit('emptyShot', {fileName: 'emptyShot.wav', xPos: player.xPos, yPos: player.yPos});
             }
         }
 
@@ -93,9 +95,9 @@ function handleKeyPress(player, data, io) {
 
     //Check for r (reload)
     if (Object.is(data.inputId, 82)) {
-        if(data.state && !player.weapon.pressed.reload) {
+        if(data.state && !player.weapon.pressed.reload && !player.weapon.locked) {
             player.weapon.reload();
-            io.sockets.emit('reload', {xPos: player.xPos, yPos: player.yPos});
+            io.sockets.emit('reload', {fileName: 'reload.wav', xPos: player.xPos, yPos: player.yPos});
         }
 
         player.weapon.pressed.reload = data.state;
