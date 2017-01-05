@@ -74,7 +74,7 @@ function handleKeyPress(player, data, io) {
         if (data.state && !player.pressed.shooting) {
             let position = player.getPosition();
 
-            if(player.weapon.getBulletsInMag()) {
+            if(player.weapon.getBulletsInMag() && !player.weapon.locked) {
                 let bullet = player.weapon.shoot(guid(), player.id, position.xPos, position.yPos, 10);
                 bullet.direction = player.direction;
 
@@ -93,8 +93,12 @@ function handleKeyPress(player, data, io) {
 
     //Check for r (reload)
     if (Object.is(data.inputId, 82)) {
-        player.weapon.reload();
-        io.sockets.emit('reload', {xPos: player.xPos, yPos: player.yPos});
+        if(data.state && !player.weapon.pressed.reload) {
+            player.weapon.reload();
+            io.sockets.emit('reload', {xPos: player.xPos, yPos: player.yPos});
+        }
+
+        player.weapon.pressed.reload = data.state;
     }
 }
 

@@ -13,10 +13,14 @@ class Weapon {
         this.type = 'semi';
         this.magSize = magSize;
         this.bulletsInMag = magSize;
+        this.locked = false;
+        this.pressed = {
+            reload: false
+        };
     }
 
     shoot (id, playerId, xPos, yPos, maxSpd) {
-        if (this.bulletsInMag) {
+        if (this.bulletsInMag && Object.is(this.locked, false)) {
             let bullet = new Bullet(id, playerId, xPos, yPos, maxSpd);
             this.bulletsInMag--;
 
@@ -27,8 +31,10 @@ class Weapon {
     }
 
     reload () {
+        this.locked = true;
         setTimeout(() => {
             this.bulletsInMag = this.magSize;
+            this.locked = false;
         }, 1000);
     }
 
