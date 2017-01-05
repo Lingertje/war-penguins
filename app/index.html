@@ -29,7 +29,13 @@
 
                 socket.on('gunshot', data => {
                     playGunshot(data);
-                })
+                });
+
+                socket.on('reload', () => {
+                    let reload = new Audio("public/audio/reload.wav");
+                    reload.volume = 0.5;
+                    reload.play();
+                });
 
                 socket.on('updatePosition', players => {
                     ctx.clearRect(0, 0, canvas.width, canvas.height); //Clear the canvas

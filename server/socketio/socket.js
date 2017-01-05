@@ -94,6 +94,7 @@ function handleKeyPress(player, data, io) {
     //Check for r (reload)
     if (Object.is(data.inputId, 82)) {
         player.weapon.reload();
+        io.sockets.emit('reload', {xPos: player.xPos, yPos: player.yPos});
     }
 }
 

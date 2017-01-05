@@ -27,7 +27,9 @@ class Weapon {
     }
 
     reload () {
-        this.bulletsInMag = this.magSize;
+        setTimeout(() => {
+            this.bulletsInMag = this.magSize;
+        }, 1000);
     }
 
     getBulletsInMag () {
