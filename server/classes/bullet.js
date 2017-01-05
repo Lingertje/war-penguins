@@ -1,14 +1,15 @@
 const Entity = require('./entity');
 
-/**
- * Represents a player
- * @constructor
- * @param {string} id The player's id (Most of the time this is the socket id)
- * @param {number} xPos Position of the bullet on the x axis
- * @param {number} yPos Position of the bullet on the y axis
- * @param {number} maxSpd The maximum of the bullet
- */
 class Bullet extends Entity {
+
+    /**
+     * Represents a player
+     * @constructor
+     * @param {string} id The player's id (Most of the time this is the socket id)
+     * @param {number} xPos Position of the bullet on the x axis
+     * @param {number} yPos Position of the bullet on the y axis
+     * @param {number} maxSpd The maximum of the bullet
+     */
     constructor (id, playerId, xPos, yPos, maxSpd) {
         super(xPos, yPos, maxSpd);
 
@@ -43,6 +44,11 @@ class Bullet extends Entity {
         this.setPosition(position.xPos, position.yPos);
     }
 
+    /**
+     *
+     * @description Checks if a bullet is out of the canvas
+     * @returns Boolean that corresponds whether a bullet is in or out of the window
+     */
     isOutWindow(){
         if (this.xPos + this.width > 500 || this.xPos < -30 || this.yPos < -30 || this.yPos + this.width > 500) {
             return true;

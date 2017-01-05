@@ -103,6 +103,7 @@
                     let gunshot = new Audio("public/audio/gunshot.wav");
                     let distance = Math.abs(position.xPos - playerSelf.xPos) + Math.abs(position.yPos - playerSelf.yPos);
                     let volume = (1000 - distance) / 1000;
+
                     gunshot.volume = Math.round(volume * 10) / 10;
                     gunshot.play();
                 }
