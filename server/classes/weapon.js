@@ -1,3 +1,5 @@
+const Bullet = require('./bullet');
+
 class Weapon {
 
     /**
@@ -13,15 +15,23 @@ class Weapon {
         this.bulletsInMag = magSize;
     }
 
-    shoot () {
-        if (bulletsInMag) {
-            this.bulletsInMag -= 1;
+    shoot (id, playerId, xPos, yPos, maxSpd) {
+        if (this.bulletsInMag) {
+            let bullet = new Bullet(id, playerId, xPos, yPos, maxSpd);
+            this.bulletsInMag--;
+
+            return bullet;
         }
 
+        return false;
     }
 
     reload () {
         this.bulletsInMag = this.magSize;
+    }
+
+    getBulletsInMag () {
+        return this.bulletsInMag;
     }
 }
 

@@ -120,6 +120,7 @@
                         case 40:
                         case 16:
                         case 32:
+                        case 82:
                             socket.emit('keyPress', { inputId: event.keyCode, state: true });
                             break;
                     }
@@ -137,6 +138,7 @@
                         case 40:
                         case 32:
                         case 16:
+                        case 82:
                             socket.emit('keyPress', { inputId: event.keyCode, state: false });
                             break;
                     }

@@ -73,11 +73,14 @@ function handleKeyPress(player, data, io) {
     if (Object.is(data.inputId, 32) && Object.is(player.pressed.sprint, false)) {
         if (data.state && !player.pressed.shooting) {
             let position = player.getPosition();
-            let bullet = new Bullet(guid(), player.id, position.xPos, position.yPos, 10);
-            bullet.direction = player.direction;
 
-            player.bullets.push(bullet);
-            io.sockets.emit('gunshot', {xPos: player.xPos, yPos: player.yPos});
+            if(player.weapon.getBulletsInMag()) {
+                let bullet = player.weapon.shoot(guid(), player.id, position.xPos, position.yPos, 10);
+                bullet.direction = player.direction;
+
+                player.bullets.push(bullet);
+                io.sockets.emit('gunshot', {xPos: player.xPos, yPos: player.yPos});
+            }
         }
 
         player.pressed.shooting = data.state;
@@ -86,6 +89,11 @@ function handleKeyPress(player, data, io) {
     //Check for shift
     if (Object.is(data.inputId, 16)) {
         player.pressed.sprint = data.state;
+    }
+
+    //Check for r (reload)
+    if (Object.is(data.inputId, 82)) {
+        player.weapon.reload();
     }
 }
 
