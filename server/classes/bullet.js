@@ -50,7 +50,7 @@ class Bullet extends Entity {
      * @returns Boolean that corresponds whether a bullet is in or out of the window
      */
     isOutWindow(){
-        if (this.xPos + this.width > 500 || this.xPos < -30 || this.yPos < -30 || this.yPos + this.width > 500) {
+        if (this.xPos + this.width > 800 || this.xPos < -30 || this.yPos < -30 || this.yPos + this.width > 600) {
             return true;
         }
 

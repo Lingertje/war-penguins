@@ -40,7 +40,7 @@ class Player extends Entity {
             maxSpd *= 1.6; //Higher max speed when sprint is pressed
         }
 
-        if (this.pressed.right && this.xPos + this.width < 500) {
+        if (this.pressed.right && this.xPos + this.width < 800) {
             position.xPos += maxSpd;
             this.direction = 'right';
         }
@@ -52,7 +52,7 @@ class Player extends Entity {
             position.yPos -= maxSpd;
             this.direction = 'up';
         }
-        if (this.pressed.down && this.yPos + this.height < 500) {
+        if (this.pressed.down && this.yPos + this.height < 600) {
             position.yPos += maxSpd;
             this.direction = 'down';
         }

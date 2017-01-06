@@ -14,14 +14,20 @@
             var characterImg = new Image();
             var characterSelf = new Image();
             var playerSelf;
+            const canvas = {
+                width: 800,
+                height: 600
+            }
 
             window.onload = function () {
-                const canvas = {
-                    width: 500,
-                    height: 500
-                }
-                var ctx = document.getElementById('canvas').getContext('2d');
-                var ctxui = document.getElementById('canvas-ui').getContext('2d');
+                var c = document.getElementById('canvas')
+                c.width = canvas.width;
+                c.height = canvas.height;
+                var ctx = c.getContext('2d');
+                var cui = document.getElementById('canvas-ui');
+                cui.width = canvas.width;
+                cui.height = canvas.height;
+                var ctxui = cui.getContext('2d');
 
                 socket.on('self', data => {
                     playerSelf = data;
@@ -55,6 +61,7 @@
                         // UI text
                         ctxui.font = "24px Arial";
                         ctxui.fillStyle = "#fff";
+                        ctxui.fillText(playerSelf.health + 'hp', canvas.width / 2 - 50, canvas.height - 25);
                         ctxui.fillText(playerSelf.weapon.bulletsInMag + '/' + playerSelf.weapon.magSize, canvas.width - 100, canvas.height - 25);
 
                         // Call the function that draws the players
@@ -163,7 +170,7 @@
     <body>
         <h1>HTML5-game</h1>
 
-        <canvas id="canvas" width="500" height="500" style="position: absolute; border: 1px solid #000;"></canvas>
-        <canvas id="canvas-ui" width="500" height="500" style="position: absolute; border: 1px solid #000;"></canvas>
+        <canvas id="canvas" style="position: absolute; border: 1px solid #000;"></canvas>
+        <canvas id="canvas-ui" width="800" height="600" style="position: absolute; border: 1px solid #000;"></canvas>
     </body>
 </html>
