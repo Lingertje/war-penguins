@@ -43,7 +43,7 @@
                     ctx.clearRect(0, 0, canvas.width, canvas.height); //Clear the canvas
 
                     players.forEach( player => {
-                        var bullets = player.bullets;
+                        var bullets = player.weapon.bullets;
 
                         // Draw a healthbar
                         ctx.fillStyle = '#b70e17';

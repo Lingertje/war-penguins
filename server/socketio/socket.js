@@ -10,10 +10,10 @@ exports = module.exports = (io) => {
         SOCKET_LIST[socket.id] = socket;
 
         // Instantiate new player object and add player to PLAYER_LIST
-        var weapon = new Weapon(guid(), 30);
-        var player = new Player(socket.id, 0, 0, 5, weapon);
-        var xPos = Math.floor((Math.random() * (500 - player.width)) + 1);
-        var yPos = Math.floor((Math.random() * (500 - player.height)) + 1);
+        let weapon = new Weapon(guid(), 30);
+        let player = new Player(socket.id, 0, 0, 5, weapon);
+        let xPos = Math.floor((Math.random() * (500 - player.width)) + 1);
+        let yPos = Math.floor((Math.random() * (500 - player.height)) + 1);
         player.setPosition(xPos, yPos);
 
         PLAYER_LIST[socket.id] = player;
@@ -28,11 +28,11 @@ exports = module.exports = (io) => {
         });
 
         socket.on('playerHit', data => {
-            var player = PLAYER_LIST[data.player.id];
-            var shooter = PLAYER_LIST[data.bullet.playerId];
-            var bullet = data.bullet;
+            let player = PLAYER_LIST[data.player.id];
+            let shooter = PLAYER_LIST[data.bullet.playerId];
+            let bullet = data.bullet;
 
-            shooter.deletePlayerBullet(data.bullet.id)
+            shooter.weapon.deleteBullet(data.bullet.id)
                 .then(result => {
                     if (result.length) {
                         player.takeDamage(bullet.dmg)
@@ -79,7 +79,7 @@ function handleKeyPress(player, data, io) {
                 let bullet = weapon.shoot(guid(), player.id, position.xPos, position.yPos, 10);
                 bullet.direction = player.direction;
 
-                player.bullets.push(bullet);
+                player.weapon.bullets.push(bullet);
                 io.sockets.emit('gunshot', {fileName: 'gunshot.wav', xPos: player.xPos, yPos: player.yPos});
             } else {
                 io.sockets.emit('emptyShot', {fileName: 'emptyShot.wav', xPos: player.xPos, yPos: player.yPos});
@@ -118,17 +118,17 @@ function guid() {
 
 //Send every connected socket package data 30 times a second
 setInterval(() => {
-    var package = [];
+    let package = [];
 
-    for (var p in PLAYER_LIST) {
-        var player = PLAYER_LIST[p];
+    for (let p in PLAYER_LIST) {
+        let player = PLAYER_LIST[p];
         player.updatePosition();
-        player.updatePlayerBullets();
+        player.weapon.updateBullets();
         package.push(player);
     }
 
-    for (var s in SOCKET_LIST) {
-        var socket = SOCKET_LIST[s];
+    for (let s in SOCKET_LIST) {
+        let socket = SOCKET_LIST[s];
         socket.emit('updatePosition', package);
     }
 

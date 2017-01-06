@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const Entity = require('./entity');
 
 class Player extends Entity {
@@ -27,7 +26,6 @@ class Player extends Entity {
             shooting: false
         };
         this.weapon = weapon;
-        this.bullets = [];
     }
 
     /**
@@ -60,33 +58,6 @@ class Player extends Entity {
         }
 
         this.setPosition(position.xPos, position.yPos);
-    }
-
-    /**
-     *
-     * @description Updates the bullets that a player has fired
-     */
-    updatePlayerBullets () {
-        for (var b in this.bullets) {
-            var bullet = this.bullets[b];
-
-            if (bullet.isOutWindow()) {
-                this.deletePlayerBullet(bullet.id);
-            }
-
-            bullet.updatePosition();
-        }
-    }
-
-    /**
-     *
-     * @param Id of the bullet that needs to be removed
-     * @description Remove a bullet from a player
-     */
-    deletePlayerBullet (bulletId) {
-        const bullet = _.findIndex(this.bullets, { 'id': bulletId });
-
-        return Promise.resolve(this.bullets.splice(bullet, 1)); //Remove bullet from array
     }
 
     /**
