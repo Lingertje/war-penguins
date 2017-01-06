@@ -20,8 +20,8 @@
                     width: 500,
                     height: 500
                 }
-                const c = document.getElementById('canvas');
-                var ctx = c.getContext('2d');
+                var ctx = document.getElementById('canvas').getContext('2d');
+                var ctxui = document.getElementById('canvas-ui').getContext('2d');
 
                 socket.on('self', data => {
                     playerSelf = data;
@@ -41,6 +41,7 @@
 
                 socket.on('updatePosition', players => {
                     ctx.clearRect(0, 0, canvas.width, canvas.height); //Clear the canvas
+                    ctxui.clearRect(0, 0, canvas.width, canvas.height); //Clear the canvas
 
                     players.forEach( player => {
                         var bullets = player.weapon.bullets;
@@ -51,8 +52,13 @@
                         ctx.strokeStyle = '#000';
                         ctx.strokeRect(player.xPos, player.yPos - 10, 50, 5);
 
+                        // UI text
+                        ctxui.font = "24px Arial";
+                        ctxui.fillStyle = "#fff";
+                        ctxui.fillText(playerSelf.weapon.bulletsInMag + '/' + playerSelf.weapon.magSize, canvas.width - 100, canvas.height - 25);
+
                         // Call the function that draws the players
-                        if (Object.is(player.id, playerSelf.id)) {
+                        if (playerSelf && Object.is(player.id, playerSelf.id)) {
                             playerSelf = player;
                             drawSelf(playerSelf);
                         } else {
@@ -72,7 +78,7 @@
 
                 function drawPlayer (player) {
                     if(Object.is(player.direction, 'right')){
-                        ctx.drawImage(characterImg, 292, 0, 292, 322, player.xPos,player.yPos, player.width, player.height);
+                        ctx.drawImage(characterImg, 292, 0, 292, 322, player.xPos, player.yPos, player.width, player.height);
                     } else {
                         ctx.drawImage(characterImg, 0, 0, 292, 322, player.xPos, player.yPos, player.width, player.height);
                     }
@@ -80,7 +86,7 @@
 
                 function drawSelf (player) {
                     if(Object.is(player.direction, 'right')){
-                        ctx.drawImage(characterSelf, 292, 0, 292, 322, player.xPos,player.yPos, player.width, player.height);
+                        ctx.drawImage(characterSelf, 292, 0, 292, 322, player.xPos, player.yPos, player.width, player.height);
                     } else {
                         ctx.drawImage(characterSelf, 0, 0, 292, 322, player.xPos, player.yPos, player.width, player.height);
                     }
@@ -156,6 +162,8 @@
     </head>
     <body>
         <h1>HTML5-game</h1>
-        <canvas id="canvas" width="500" height="500" style="border: 1px solid #000"></canvas>
+
+        <canvas id="canvas" width="500" height="500" style="position: absolute; border: 1px solid #000;"></canvas>
+        <canvas id="canvas-ui" width="500" height="500" style="position: absolute; border: 1px solid #000;"></canvas>
     </body>
 </html>

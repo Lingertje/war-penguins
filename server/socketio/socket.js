@@ -79,7 +79,7 @@ function handleKeyPress(player, data, io) {
                 let bullet = weapon.shoot(guid(), player.id, position.xPos, position.yPos, 10);
                 bullet.direction = player.direction;
 
-                player.weapon.bullets.push(bullet);
+                weapon.bullets.push(bullet);
                 io.sockets.emit('gunshot', {fileName: 'gunshot.wav', xPos: player.xPos, yPos: player.yPos});
             } else {
                 io.sockets.emit('emptyShot', {fileName: 'emptyShot.wav', xPos: player.xPos, yPos: player.yPos});
@@ -122,8 +122,11 @@ setInterval(() => {
 
     for (let p in PLAYER_LIST) {
         let player = PLAYER_LIST[p];
+        let weapon = player.weapon;
+
         player.updatePosition();
-        player.weapon.updateBullets();
+        weapon.updateBullets();
+
         package.push(player);
     }
 
