@@ -3,7 +3,7 @@ const Entity = require('./entity');
 class Bullet extends Entity {
 
     /**
-     * Represents a player
+     * Represents a bullet
      * @constructor
      * @param {string} id The player's id (Most of the time this is the socket id)
      * @param {number} xPos Position of the bullet on the x axis
@@ -14,7 +14,6 @@ class Bullet extends Entity {
         super(xPos, yPos, maxSpd);
 
         this.id = id;
-        this.active = true;
         this.playerId = playerId;
         this.dmg = 10;
         this.width = 10;

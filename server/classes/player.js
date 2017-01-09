@@ -16,7 +16,10 @@ class Player extends Entity {
         this.id = id;
         this.width = 50;
         this.height = 50;
+        this.alive = true;
         this.health = 100;
+        this.kills = 0;
+        this.weapon = weapon;
         this.pressed = {
             left 	: false,
             right 	: false,
@@ -25,7 +28,6 @@ class Player extends Entity {
             sprint  : false,
             shooting: false
         };
-        this.weapon = weapon;
     }
 
     /**

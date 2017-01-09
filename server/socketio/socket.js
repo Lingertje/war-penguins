@@ -1,22 +1,23 @@
+const World = require('../classes/world');
 const Player = require('../classes/player');
 const Weapon = require('../classes/weapon');
 const Bullet = require('../classes/bullet');
 
 let SOCKET_LIST = {};
-let PLAYER_LIST = {};
+let world = new World(guid()); // World instance
 
 exports = module.exports = (io) => {
+
     io.on('connection', (socket) => {
         SOCKET_LIST[socket.id] = socket;
 
-        // Instantiate new player object and add player to PLAYER_LIST
+        // Instantiate new player object and add player to game world
         let weapon = new Weapon(guid(), 30);
         let player = new Player(socket.id, 0, 0, 5, weapon);
         let xPos = Math.floor((Math.random() * (500 - player.width)) + 1);
         let yPos = Math.floor((Math.random() * (500 - player.height)) + 1);
         player.setPosition(xPos, yPos);
-
-        PLAYER_LIST[socket.id] = player;
+        world.addPlayer(player); // Add player to game world
 
         socket.emit('self', player);
 
@@ -24,12 +25,14 @@ exports = module.exports = (io) => {
         socket.broadcast.emit('connected', 'A user has connected.');
 
         socket.on('keyPress', data => {
-            handleKeyPress(player, data, io);
+            if (Object.is(player.alive, true)) {
+                handleKeyPress(player, data, io);
+            }
         });
 
         socket.on('playerHit', data => {
-            let player = PLAYER_LIST[data.player.id];
-            let shooter = PLAYER_LIST[data.bullet.playerId];
+            let player = world.getPlayer(data.player.id);
+            let shooter = world.getPlayer(data.bullet.playerId);
             let bullet = data.bullet;
 
             shooter.weapon.deleteBullet(data.bullet.id)
@@ -38,7 +41,8 @@ exports = module.exports = (io) => {
                         player.takeDamage(bullet.dmg)
 
                         if(player && player.health <= 0){
-                            delete PLAYER_LIST[player.id];
+                            shooter.kills += 1;
+                            player.alive = false;
                         }
                     }
                 }); //Remove bullet from the player that fired it
@@ -46,7 +50,7 @@ exports = module.exports = (io) => {
 
         socket.on('disconnect', () => {
            delete SOCKET_LIST[socket.id];
-           delete PLAYER_LIST[socket.id];
+           world.deletePlayer(socket.id);
 
            socket.broadcast.emit('disconnected', 'A user has disconnected.');
         });
@@ -118,20 +122,10 @@ function guid() {
 
 //Send every connected socket package data 30 times a second
 setInterval(() => {
-    let package = [];
+    let package = world.update();
 
-    for (let p in PLAYER_LIST) {
-        let player = PLAYER_LIST[p];
-        let weapon = player.weapon;
-
-        player.updatePosition();
-        weapon.updateBullets();
-
-        package.push(player);
-    }
-
-    for (let s in SOCKET_LIST) {
-        let socket = SOCKET_LIST[s];
+    for (let p in world.players) {
+        let socket = SOCKET_LIST[p];
         socket.emit('updatePosition', package);
     }
 

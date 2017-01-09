@@ -1,7 +1,7 @@
 class Entity {
 
     /**
-     * Abstract class that represents an Entity
+     * Abstract class that represents an entity
      * @constructor
      * @param {number} xPos Position of the entity on the x axis
      * @param {number} yPos Position of the entity on the y axis

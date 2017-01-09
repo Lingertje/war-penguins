@@ -42,7 +42,8 @@ class Weapon {
      * @description Reloads the weapon and locks it for X seconds
      */
     reload () {
-        this.locked = true;
+        this.locked = true; // Lock the weapon so you can't shoot while reloading
+
         setTimeout(() => {
             this.bulletsInMag = this.magSize;
             this.locked = false;

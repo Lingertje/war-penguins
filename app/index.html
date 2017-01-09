@@ -33,15 +33,7 @@
                     playerSelf = data;
                 });
 
-                socket.on('gunshot', data => {
-                    playAudio(data);
-                });
-
-                socket.on('emptyShot', data => {
-                    playAudio(data);
-                });
-
-                socket.on('reload', data => {
+                socket.on(['gunshot', 'emptyShot', 'reload'], data => {
                     playAudio(data);
                 });
 
@@ -58,13 +50,13 @@
                         ctx.strokeStyle = '#000';
                         ctx.strokeRect(player.xPos, player.yPos - 10, 50, 5);
 
-                        // UI text
-                        drawUI();
-
                         // Call the function that draws the players
                         if (playerSelf && Object.is(player.id, playerSelf.id)) {
                             playerSelf = player;
                             drawSelf(playerSelf);
+
+                            // UI text
+                            drawUI();
                         } else {
                             drawPlayer(player);
                         }
@@ -103,8 +95,11 @@
                 function drawUI () {
                     ctxui.font = "24px Arial";
                     ctxui.fillStyle = "#fff";
+                    ctxui.fillText('Kill count: ' + playerSelf.kills, 20, 50); // Kill count
                     ctxui.fillText(playerSelf.weapon.bulletsInMag + '/' + playerSelf.weapon.magSize, canvas.width - 100, canvas.height - 25); // Bullets
-                    ctxui.fillText(playerSelf.health + 'hp', canvas.width / 2 - 30, canvas.height - 25); // Healthbar
+                    ctxui.fillText(playerSelf.health + 'hp', canvas.width / 2 - 30, canvas.height - 25); // Health
+
+                    // Healthbar
                     ctx.fillStyle = '#b70e17';
                     ctx.fillRect(canvas.width / 2 - 100, canvas.height - 47, playerSelf.health * 2, 30);
                     ctx.strokeStyle = '#000';
@@ -113,7 +108,7 @@
 
                 function handleCollision (bullet, players) {
                     players.forEach( player => {
-                        if (playerSelf && playerSelf['id'] === player.id && player.id !== bullet.playerId) {
+                        if (playerSelf && playerSelf['id'] === player.id && player.id !== bullet.playerId && player.alive) {
                             if (collides(bullet, player)) {
                                 socket.emit('playerHit', { player: player, bullet: bullet });
                             }
@@ -178,14 +173,9 @@
     <body>
         <h1>War Penguins</h1>
 
-<<<<<<< Updated upstream
-        <canvas id="canvas" style="position: absolute; border: 1px solid #000;"></canvas>
-        <canvas id="canvas-ui" style="position: absolute; border: 1px solid #000;"></canvas>
-=======
         <div class="game">
             <canvas id="canvas" style="position: absolute; border: 1px solid #000;"></canvas>
             <canvas id="canvas-ui" width="800" height="600" style="position: absolute; border: 1px solid #000;"></canvas>
         </div>
->>>>>>> Stashed changes
     </body>
 </html>
