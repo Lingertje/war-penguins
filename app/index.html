@@ -33,7 +33,15 @@
                     playerSelf = data;
                 });
 
-                socket.on(['gunshot', 'emptyShot', 'reload'], data => {
+                socket.on('gunshot', data => {
+                    playAudio(data);
+                });
+
+                socket.on('emptyShot', data => {
+                    playAudio(data);
+                });
+
+                socket.on('reload', data => {
                     playAudio(data);
                 });
 
