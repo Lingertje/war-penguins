@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>HTML5-GAME</title>
+        <title>War Penguins by Lingertje</title>
 
         <!-- CSS-files -->
         <link rel="stylesheet" href="public/css/main.css">
@@ -103,8 +103,12 @@
                 function drawUI () {
                     ctxui.font = "24px Arial";
                     ctxui.fillStyle = "#fff";
-                    ctxui.fillText(playerSelf.health + 'hp', canvas.width / 2 - 50, canvas.height - 25);
-                    ctxui.fillText(playerSelf.weapon.bulletsInMag + '/' + playerSelf.weapon.magSize, canvas.width - 100, canvas.height - 25);
+                    ctxui.fillText(playerSelf.weapon.bulletsInMag + '/' + playerSelf.weapon.magSize, canvas.width - 100, canvas.height - 25); // Bullets
+                    ctxui.fillText(playerSelf.health + 'hp', canvas.width / 2 - 30, canvas.height - 25); // Healthbar
+                    ctx.fillStyle = '#b70e17';
+                    ctx.fillRect(canvas.width / 2 - 100, canvas.height - 47, playerSelf.health * 2, 30);
+                    ctx.strokeStyle = '#000';
+                    ctx.strokeRect(canvas.width / 2 - 100, canvas.height - 47, 200, 30);
                 }
 
                 function handleCollision (bullet, players) {
@@ -172,9 +176,16 @@
         </script>
     </head>
     <body>
-        <h1>HTML5-game</h1>
+        <h1>War Penguins</h1>
 
+<<<<<<< Updated upstream
         <canvas id="canvas" style="position: absolute; border: 1px solid #000;"></canvas>
         <canvas id="canvas-ui" style="position: absolute; border: 1px solid #000;"></canvas>
+=======
+        <div class="game">
+            <canvas id="canvas" style="position: absolute; border: 1px solid #000;"></canvas>
+            <canvas id="canvas-ui" width="800" height="600" style="position: absolute; border: 1px solid #000;"></canvas>
+        </div>
+>>>>>>> Stashed changes
     </body>
 </html>
