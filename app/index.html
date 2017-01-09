@@ -59,10 +59,7 @@
                         ctx.strokeRect(player.xPos, player.yPos - 10, 50, 5);
 
                         // UI text
-                        ctxui.font = "24px Arial";
-                        ctxui.fillStyle = "#fff";
-                        ctxui.fillText(playerSelf.health + 'hp', canvas.width / 2 - 50, canvas.height - 25);
-                        ctxui.fillText(playerSelf.weapon.bulletsInMag + '/' + playerSelf.weapon.magSize, canvas.width - 100, canvas.height - 25);
+                        drawUI();
 
                         // Call the function that draws the players
                         if (playerSelf && Object.is(player.id, playerSelf.id)) {
@@ -101,6 +98,13 @@
 
                 function drawBullet (bullet) {
                     ctx.fillRect(bullet.xPos + 20, bullet.yPos + 15, bullet.width, bullet.height);
+                }
+
+                function drawUI () {
+                    ctxui.font = "24px Arial";
+                    ctxui.fillStyle = "#fff";
+                    ctxui.fillText(playerSelf.health + 'hp', canvas.width / 2 - 50, canvas.height - 25);
+                    ctxui.fillText(playerSelf.weapon.bulletsInMag + '/' + playerSelf.weapon.magSize, canvas.width - 100, canvas.height - 25);
                 }
 
                 function handleCollision (bullet, players) {
@@ -171,6 +175,6 @@
         <h1>HTML5-game</h1>
 
         <canvas id="canvas" style="position: absolute; border: 1px solid #000;"></canvas>
-        <canvas id="canvas-ui" width="800" height="600" style="position: absolute; border: 1px solid #000;"></canvas>
+        <canvas id="canvas-ui" style="position: absolute; border: 1px solid #000;"></canvas>
     </body>
 </html>
