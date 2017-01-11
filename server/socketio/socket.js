@@ -114,7 +114,7 @@ function addPlayerToWorld (player) {
     let world;
 
     if (WORLD_LIST.length === 0 || WORLD_LIST[WORLD_LIST.length - 1].playerCount >= WORLD_LIST[WORLD_LIST.length - 1].playerMax) { // If there is no world or latest world has more than 4 players create a new world
-        world = new World(guid(), 6); // World instance
+        world = new World(guid(), 4); // World instance
         WORLD_LIST.push(world);
     } else {
         world = WORLD_LIST[WORLD_LIST.length - 1]; // Add player to latest world
@@ -156,7 +156,7 @@ setInterval(() => {
 
         if (!world.playerCount) {
             delete WORLD_LIST[i];
-            console.log('World deleted with ' + world.playerCount + ' players');
+            console.log('World (id: ' + world.id + ') deleted with ' + world.playerCount + ' players');
         }
     }
 
