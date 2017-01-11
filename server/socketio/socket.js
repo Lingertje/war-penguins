@@ -4,7 +4,7 @@ const Weapon = require('../classes/weapon');
 const Bullet = require('../classes/bullet');
 
 let SOCKET_LIST = {};
-let world = new World(guid()); // World instance
+let WORLD_LIST = [];
 
 exports = module.exports = (io) => {
 
@@ -17,7 +17,7 @@ exports = module.exports = (io) => {
         let xPos = Math.floor((Math.random() * (500 - player.width)) + 1);
         let yPos = Math.floor((Math.random() * (500 - player.height)) + 1);
         player.setPosition(xPos, yPos);
-        world.addPlayer(player); // Add player to game world
+        let world = addPlayerToWorld(player);
 
         socket.emit('self', player);
 
@@ -109,7 +109,22 @@ function handleKeyPress(player, data, io) {
     }
 }
 
-//Generates a random ID
+// Add player to a world
+function addPlayerToWorld (player) {
+    let world;
+
+    if (WORLD_LIST.length === 0 || WORLD_LIST[WORLD_LIST.length - 1].playerCount >= 4) { // If there is no world or latest world has more than 4 players create a new world
+        world = new World(guid()); // World instance
+        WORLD_LIST.push(world);
+    } else {
+        world = WORLD_LIST[WORLD_LIST.length - 1]; // Add player to latest world
+    }
+
+    world.addPlayer(player); // Add player to game world
+    return world;
+}
+
+// Generates a random ID
 function guid() {
     function s4() {
         return Math.floor((1 + Math.random()) * 0x10000)
@@ -120,13 +135,29 @@ function guid() {
         s4() + '-' + s4() + s4() + s4();
 }
 
-//Send every connected socket package data 30 times a second
+// Send every connected socket package data 30 times a second
 setInterval(() => {
-    let package = world.update();
+    for (let i in WORLD_LIST) {
+        let world = WORLD_LIST[i];
+        let package = world.update();
 
-    for (let p in world.players) {
-        let socket = SOCKET_LIST[p];
-        socket.emit('updatePosition', package);
+        for (let p in world.players) {
+            let socket = SOCKET_LIST[p];
+            socket.emit('updatePosition', package);
+        }
     }
 
 }, 1000 / 30);
+
+// Remove empty worlds from array
+setInterval(() => {
+    for (let i in WORLD_LIST) {
+        let world = WORLD_LIST[i];
+
+        if (!world.playerCount) {
+            delete WORLD_LIST[i];
+            console.log('World deleted with ' + world.playerCount + ' players');
+        }
+    }
+
+}, 1000 * 30);
