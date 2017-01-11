@@ -113,8 +113,8 @@ function handleKeyPress(player, data, io) {
 function addPlayerToWorld (player) {
     let world;
 
-    if (WORLD_LIST.length === 0 || WORLD_LIST[WORLD_LIST.length - 1].playerCount >= 4) { // If there is no world or latest world has more than 4 players create a new world
-        world = new World(guid()); // World instance
+    if (WORLD_LIST.length === 0 || WORLD_LIST[WORLD_LIST.length - 1].playerCount >= WORLD_LIST[WORLD_LIST.length - 1].playerMax) { // If there is no world or latest world has more than 4 players create a new world
+        world = new World(guid(), 6); // World instance
         WORLD_LIST.push(world);
     } else {
         world = WORLD_LIST[WORLD_LIST.length - 1]; // Add player to latest world
@@ -147,7 +147,7 @@ setInterval(() => {
         }
     }
 
-}, 1000 / 30);
+}, 1000 / 30); // each 30 times a second
 
 // Remove empty worlds from array
 setInterval(() => {
@@ -160,4 +160,4 @@ setInterval(() => {
         }
     }
 
-}, 1000 * 30);
+}, 1000 * 30); // each 30 seconds

@@ -5,10 +5,11 @@ class World {
      * @constructor
      * @param {string} id The world's id
      */
-    constructor (id) {
+    constructor (id, playerMax = 4) {
         this.id = id;
         this.players = {};
         this.playerCount = 0;
+        this.playerMax = playerMax;
     }
 
     /**
