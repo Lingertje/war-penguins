@@ -5,7 +5,8 @@ class Bullet extends Entity {
     /**
      * Represents a bullet
      * @constructor
-     * @param {string} id The player's id (Most of the time this is the socket id)
+     * @param {string} id The bullet's id
+     * @param {string} playerId The player's id (Most of the time this is the socket id)
      * @param {number} xPos Position of the bullet on the x axis
      * @param {number} yPos Position of the bullet on the y axis
      * @param {number} maxSpd The maximum of the bullet
@@ -18,6 +19,7 @@ class Bullet extends Entity {
         this.dmg = 10;
         this.width = 10;
         this.height = 10;
+        this.distance = 0;
     }
 
     /**
@@ -26,6 +28,8 @@ class Bullet extends Entity {
      */
     updatePosition(){
         let position = this.getPosition();
+
+        this.distance += this.maxSpd;
 
         if (!this.direction || this.direction === 'right') {
             position.xPos += this.maxSpd;

@@ -12,7 +12,7 @@ exports = module.exports = (io) => {
         SOCKET_LIST[socket.id] = socket;
 
         // Instantiate new player object and add player to game world
-        let weapon = new Weapon(guid(), 30);
+        let weapon = new Weapon(guid(), 30, 500);
         let player = new Player(socket.id, 0, 0, 5, weapon);
         let xPos = Math.floor((Math.random() * (500 - player.width)) + 1);
         let yPos = Math.floor((Math.random() * (500 - player.height)) + 1);
@@ -149,7 +149,7 @@ setInterval(() => {
 
 }, 1000 / 30); // each 30 times a second
 
-// Remove empty worlds from array
+// Remove empty worlds from WORLD_LIST array
 setInterval(() => {
     for (let i in WORLD_LIST) {
         let world = WORLD_LIST[i];

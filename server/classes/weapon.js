@@ -9,9 +9,10 @@ class Weapon {
     * @param {string} id The weapon's id (Most of the time this is the socket id)
     * @param {number} magSize The ammount of bullets that can fit in the weapons magazine
      */
-    constructor (id, magSize) {
+    constructor (id, magSize, range) {
         this.id = id;
         this.type = 'semi';
+        this.range = range;
         this.magSize = magSize;
         this.bulletsInMag = magSize;
         this.locked = false;
@@ -67,7 +68,7 @@ class Weapon {
         for (var b in this.bullets) {
             var bullet = this.bullets[b];
 
-            if (bullet.isOutWindow()) {
+            if (bullet.isOutWindow() || this.range < bullet.distance) {
                 this.deleteBullet(bullet.id);
             }
 
