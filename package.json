@@ -1,6 +1,6 @@
 {
   "name": "html5-game",
-  "version": "1.5.0",
+  "version": "1.0.0",
   "description": "Multiplayer game made with HTML5 and Node.js",
   "author": "Mart Linger",
   "scripts": {
