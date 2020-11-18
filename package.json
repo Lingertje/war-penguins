@@ -4,13 +4,12 @@
   "description": "Multiplayer game made with HTML5 and Node.js",
   "author": "Mart Linger",
   "scripts": {
-    "start": "nodemon server/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon server/server.js"
   },
   "dependencies": {
-    "express": "^4.14.0",
-    "lodash": "^4.17.2",
-    "socket.io": "^1.7.2",
-    "winston": "^2.3.0"
+    "express": "4.14.0",
+    "lodash": "4.17.2",
+    "socket.io": "1.7.2",
+    "winston": "2.3.0"
   }
 }
