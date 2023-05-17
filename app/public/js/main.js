@@ -8,8 +8,8 @@ const canvas = {
 let playerSelf;
 const characterImg = new Image();
 const characterSelf = new Image();
-characterImg.src = 'public/img/character.png';
-characterSelf.src = 'public/img/character_self.png';
+characterImg.src = 'img/character.png';
+characterSelf.src = 'img/character_self.png';
 
 window.onload = function () {
     var c = document.getElementById('canvas')
@@ -107,46 +107,46 @@ window.onload = function () {
     }
 
     function playAudio(position){
-        let gunshot = new Audio(`public/audio/${position.fileName}`);
+        let audio = new Audio(`audio/${position.fileName}`);
         let distance = Math.abs(position.xPos - playerSelf.xPos) + Math.abs(position.yPos - playerSelf.yPos);
         let volume = (1000 - distance) / 1000;
 
-        gunshot.volume = Math.round(volume * 10) / 10;
-        gunshot.play();
+        audio.volume = Math.round(volume * 10) / 10;
+        audio.play();
     }
 
     document.onkeydown = function (event) {
-        switch (event.keyCode) {
-            case 65:
-            case 37:
-            case 68:
-            case 39:
-            case 87:
-            case 38:
-            case 83:
-            case 40:
-            case 16:
-            case 32:
-            case 82:
-                socket.emit('keyPress', { inputId: event.keyCode, state: true });
+        switch (event.key) {
+            case 'Shift':
+            case 'a':
+            case 'ArrowLeft':
+            case 'd':
+            case 'ArrowRight':
+            case 'w':
+            case 'ArrowUp':
+            case 's':
+            case 'ArrowDown':
+            case ' ':
+            case 'r':
+                socket.emit('keyPress', { inputId: event.key, state: true });
                 break;
         }
     };
 
     document.onkeyup = function (event) {
-        switch (event.keyCode) {
-            case 65:
-            case 37:
-            case 68:
-            case 39:
-            case 87:
-            case 38:
-            case 83:
-            case 40:
-            case 32:
-            case 16:
-            case 82:
-                socket.emit('keyPress', { inputId: event.keyCode, state: false });
+        switch (event.key) {
+            case 'Shift':
+            case 'a':
+            case 'ArrowLeft':
+            case 'd':
+            case 'ArrowRight':
+            case 'w':
+            case 'ArrowUp':
+            case 's':
+            case 'ArrowDown':
+            case ' ':
+            case 'r':
+                socket.emit('keyPress', { inputId: event.key, state: false });
                 break;
         }
     }

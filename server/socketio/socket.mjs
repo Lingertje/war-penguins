@@ -48,21 +48,21 @@ const handleKeyPress = (player, data, io, world) => {
     let weapon = player.weapon;
 
     //Check for arrow keys and wasd keys
-    if (Object.is(data.inputId, 68) || Object.is(data.inputId, 39)) {
+    if (Object.is(data.inputId, 'd') || Object.is(data.inputId, 'ArrowRight')) {
         player.pressed.right = data.state;
     }
-    if (Object.is(data.inputId, 65) || Object.is(data.inputId, 37)) {
+    if (Object.is(data.inputId, 'a') || Object.is(data.inputId, 'ArrowLeft')) {
         player.pressed.left = data.state;
     }
-    if (Object.is(data.inputId, 87) || Object.is(data.inputId, 38)) {
+    if (Object.is(data.inputId, 'w') || Object.is(data.inputId, 'ArrowUp')) {
         player.pressed.up = data.state;
     }
-    if (Object.is(data.inputId, 83) || Object.is(data.inputId, 40)) {
+    if (Object.is(data.inputId, 's') || Object.is(data.inputId, 'ArrowDown')) {
         player.pressed.down = data.state;
     }
 
     //Check for spacebar and fire bullet (player can't shoot while sprinting)
-    if (Object.is(data.inputId, 32) && Object.is(player.pressed.sprint, false)) {
+    if (Object.is(data.inputId, ' ') && Object.is(player.pressed.sprint, false)) {
         if (data.state && !player.pressed.shooting) {
             let position = player.position;
 
@@ -81,12 +81,12 @@ const handleKeyPress = (player, data, io, world) => {
     }
 
     //Check for shift
-    if (Object.is(data.inputId, 16)) {
+    if (Object.is(data.inputId, 'Shift')) {
         player.pressed.sprint = data.state;
     }
 
     //Check for r (reload)
-    if (Object.is(data.inputId, 82)) {
+    if (Object.is(data.inputId, 'r')) {
         if(data.state && !weapon.pressed.reload && weapon.bulletsInMag !== 30 && !weapon.locked) {
             weapon.reload();
             io.sockets.to(world.id).emit('reload', {fileName: 'reload.wav', xPos: player.xPos, yPos: player.yPos});

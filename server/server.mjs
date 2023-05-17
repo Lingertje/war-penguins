@@ -12,7 +12,7 @@ import socket from './socketio/socket.mjs';
 const socketio = socket(io);
 
 // Serve static content
-app.use(express.static('app'));
+app.use(express.static('app/public'));
 
 // Set port for server to listen to
 app.set('port', process.env.PORT || 8080);
