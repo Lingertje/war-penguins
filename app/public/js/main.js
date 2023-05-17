@@ -1,12 +1,15 @@
 const socket = io();
 
-var characterImg = new Image();
-var characterSelf = new Image();
-var playerSelf;
 const canvas = {
     width: 800,
     height: 600
 }
+
+let playerSelf;
+const characterImg = new Image();
+const characterSelf = new Image();
+characterImg.src = 'public/img/character.png';
+characterSelf.src = 'public/img/character_self.png';
 
 window.onload = function () {
     var c = document.getElementById('canvas')
@@ -66,9 +69,6 @@ window.onload = function () {
             bullets.forEach( bullet => {
                 drawBullet(bullet);
             });
-
-            characterImg.src = '/public/img/character.png';
-            characterSelf.src = '/public/img/character_self.png';
         });
     });
 
