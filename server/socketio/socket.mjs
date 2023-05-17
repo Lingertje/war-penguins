@@ -18,7 +18,9 @@ export default (io) => {
         player.position = {xPos, yPos};
         let world = addPlayerToWorld(player);
 
-        socket.emit('self', player);
+        setTimeout(() => {
+            socket.emit('self', player);
+        }, 50);
 
         //Emit to everyone except the current socket that a user has connected
         socket.broadcast.emit('connected', 'A user has connected.');

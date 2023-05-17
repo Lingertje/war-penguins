@@ -38,7 +38,7 @@ window.onload = function () {
         ctx.clearRect(0, 0, canvas.width, canvas.height); //Clear the canvas
         ctxui.clearRect(0, 0, canvas.width, canvas.height); //Clear the canvas
 
-        players.forEach( player => {
+        players.forEach( player => {      
             var bullets = player.weapon.bullets;
 
             // Draw a healthbar
