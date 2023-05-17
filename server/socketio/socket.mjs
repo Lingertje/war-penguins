@@ -31,24 +31,6 @@ export default (io) => {
             }
         });
 
-        socket.on('playerHit', data => {
-            let player = world.getPlayer(data.player.id);
-            let shooter = world.getPlayer(data.bullet.playerId);
-            let bullet = data.bullet;
-
-            shooter.weapon.deleteBullet(data.bullet.id)
-                .then(result => {
-                    if (result.length) {
-                        player.takeDamage(bullet.dmg)
-
-                        if(player && player.health <= 0){
-                            shooter.kills += 1;
-                            player.alive = false;
-                        }
-                    }
-                }); //Remove bullet from the player that fired it
-        });
-
         socket.on('disconnect', () => {
            delete SOCKET_LIST[socket.id];
            world.deletePlayer(socket.id);

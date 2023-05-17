@@ -60,7 +60,6 @@ window.onload = function () {
 
             // Call the function that draws the bullets the player fired
             bullets.forEach( bullet => {
-                handleCollision(bullet, players);
                 drawBullet(bullet);
             });
 
@@ -101,23 +100,6 @@ window.onload = function () {
         ctx.fillRect(canvas.width / 2 - 100, canvas.height - 47, playerSelf.health * 2, 30);
         ctx.strokeStyle = '#000';
         ctx.strokeRect(canvas.width / 2 - 100, canvas.height - 47, 200, 30);
-    }
-
-    function handleCollision (bullet, players) {
-        players.forEach( player => {
-            if (playerSelf && playerSelf['id'] === player.id && player.id !== bullet.playerId && player.alive) {
-                if (collides(bullet, player)) {
-                    socket.emit('playerHit', { player: player, bullet: bullet });
-                }
-            }
-        });
-    }
-
-    function collides (object1, object2) {
-        return object1.xPos < object2.xPos + object2.width &&
-            object1.xPos + object1.width > object2.xPos &&
-            object1.yPos < object2.yPos + object2.height &&
-            object1.yPos + object1.height > object2.yPos;
     }
 
     function playAudio(position){
