@@ -1,12 +1,11 @@
-const World = require('../classes/world');
-const Player = require('../classes/player');
-const Weapon = require('../classes/weapon');
-const Bullet = require('../classes/bullet');
+import World from '../classes/world.mjs';
+import Player from '../classes/player.mjs';
+import Weapon from '../classes/weapon.mjs';
 
 let SOCKET_LIST = {};
 let WORLD_LIST = [];
 
-exports = module.exports = (io) => {
+export default (io) => {
 
     io.on('connection', (socket) => {
         SOCKET_LIST[socket.id] = socket;
@@ -57,7 +56,7 @@ exports = module.exports = (io) => {
     });
 };
 
-function handleKeyPress(player, data, io) {
+const handleKeyPress = (player, data, io) => {
     let weapon = player.weapon;
 
     //Check for arrow keys and wasd keys
@@ -110,7 +109,7 @@ function handleKeyPress(player, data, io) {
 }
 
 // Add player to a world
-function addPlayerToWorld (player) {
+const addPlayerToWorld = (player) => {
     let world;
 
     if (WORLD_LIST.length === 0 || WORLD_LIST[WORLD_LIST.length - 1].playerCount >= WORLD_LIST[WORLD_LIST.length - 1].playerMax) { // If there is no world or latest world has more than 4 players create a new world
@@ -125,7 +124,7 @@ function addPlayerToWorld (player) {
 }
 
 // Generates a random ID
-function guid() {
+const guid = () => {
     function s4() {
         return Math.floor((1 + Math.random()) * 0x10000)
             .toString(16)
@@ -139,11 +138,11 @@ function guid() {
 setInterval(() => {
     for (let i in WORLD_LIST) {
         let world = WORLD_LIST[i];
-        let package = world.update();
+        let load = world.update();
 
         for (let p in world.players) {
             let socket = SOCKET_LIST[p];
-            socket.emit('updatePosition', package);
+            socket.emit('updatePosition', load);
         }
     }
 

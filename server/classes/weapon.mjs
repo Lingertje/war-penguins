@@ -1,5 +1,5 @@
-const _ = require('lodash');
-const Bullet = require('./bullet');
+import _ from 'lodash';
+import Bullet from './bullet.mjs';
 
 class Weapon {
 
@@ -88,4 +88,4 @@ class Weapon {
     }
 }
 
-module.exports = Weapon;
+export default Weapon;

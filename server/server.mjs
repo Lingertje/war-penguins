@@ -1,11 +1,15 @@
-require('dotenv').config();
-const express = require('express');
+import * as dotenv from 'dotenv';
+dotenv.config();
+import express from 'express';
 const app = express();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+import * as http from 'http';
+const server = http.createServer(app);
+import { Server } from 'socket.io';
+const io = new Server(server);
 
 // Import files
-const socketio = require('./socketio/socket')(io);
+import socket from './socketio/socket.mjs';
+const socketio = socket(io);
 
 // Serve static content
 app.use(express.static('app'));
@@ -17,6 +21,6 @@ app.get('/', (req, res) => {
     res.sendFile('./app/index.html', { root: __dirname + '/..' });
 });
 
-http.listen(app.get('port'), () => {
+server.listen(app.get('port'), () => {
     console.log('server is listening on  *:' + app.get('port'));
 });

@@ -4,8 +4,8 @@
   "description": "Multiplayer game made with HTML5 and Node.js",
   "author": "Mart Linger",
   "scripts": {
-    "start": "node server/server.js",
-    "start:nodemon": "nodemon server/server.js"
+    "start": "node server/server.mjs",
+    "start:nodemon": "nodemon server/server.mjs"
   },
   "dependencies": {
     "dotenv": "8.2.0",
@@ -15,6 +15,7 @@
     "winston": "3.3.3"
   },
   "engines": {
-    "node": ">=14.0.0"
-  }
+    "node": ">=18.16.0"
+  },
+  "type": "commonjs"
 }

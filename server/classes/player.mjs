@@ -1,4 +1,4 @@
-const Entity = require('./entity');
+import Entity from './entity.mjs';
 
 class Player extends Entity {
 
@@ -72,4 +72,4 @@ class Player extends Entity {
     }
 }
 
-module.exports = Player;
+export default Player;
