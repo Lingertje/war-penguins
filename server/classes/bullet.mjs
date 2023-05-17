@@ -27,7 +27,7 @@ class Bullet extends Entity {
      * @description Checks if a certain key is pressed and updates the position accordingly
      */
     updatePosition(){
-        let position = this.getPosition();
+        let position = this.position;
 
         this.distance += this.maxSpd;
 
@@ -44,7 +44,7 @@ class Bullet extends Entity {
             position.yPos += this.maxSpd;
         }
 
-        this.setPosition(position.xPos, position.yPos);
+        this.position = {xPos: position.xPos, yPos: position.yPos};
     }
 
     /**
@@ -53,11 +53,7 @@ class Bullet extends Entity {
      * @returns Boolean that corresponds whether a bullet is in or out of the window
      */
     isOutWindow(){
-        if (this.xPos + this.width > 800 || this.xPos < -30 || this.yPos < -30 || this.yPos + this.width > 600) {
-            return true;
-        }
-
-        return false;
+        return (this.xPos + this.width > 800 || this.xPos < -30 || this.yPos < -30 || this.yPos + this.width > 600);
     }
 }
 

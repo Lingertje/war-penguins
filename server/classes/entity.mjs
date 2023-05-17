@@ -22,7 +22,7 @@ class Entity {
      *
      * @description Get the current position (x and y axis) of the entity
      */
-    getPosition () {
+    get position () {
         return {
             'xPos': this.xPos,
             'yPos': this.yPos
@@ -35,7 +35,7 @@ class Entity {
      * @param {number} yPos Position of the entity on the y axis
      * @description Set the current position (x and y axis) of the entity
      */
-    setPosition (xPos, yPos) {
+    set position ({ xPos, yPos }) {
         this.xPos = xPos;
         this.yPos = yPos;
     }

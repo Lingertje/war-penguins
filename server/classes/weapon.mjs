@@ -53,15 +53,6 @@ class Weapon {
 
     /**
      *
-     * @description Returns the ammount of bullets in the magazine
-     * @returns {number} The ammount of bullets currently in the magazine
-     */
-    getBulletsInMag () {
-        return this.bulletsInMag;
-    }
-
-    /**
-     *
      * @description Updates the bullets that a player has fired
      */
     updateBullets () {
@@ -69,7 +60,7 @@ class Weapon {
             var bullet = this.bullets[b];
 
             if (bullet.isOutWindow() || this.range < bullet.distance) {
-                this.deleteBullet(bullet.id);
+                return this.deleteBullet(bullet.id);
             }
 
             bullet.updatePosition();

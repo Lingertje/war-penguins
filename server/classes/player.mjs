@@ -35,7 +35,7 @@ class Player extends Entity {
      * @description Checks if a certain key is pressed and updates the position accordingly
      */
     updatePosition () {
-        let position = this.getPosition();
+        let position = this.position;
         let maxSpd = this.maxSpd;
 
         if(this.pressed.sprint){
@@ -59,7 +59,7 @@ class Player extends Entity {
             this.direction = 'down';
         }
 
-        this.setPosition(position.xPos, position.yPos);
+        this.position = {xPos: position.xPos, yPos: position.yPos};
     }
 
     /**

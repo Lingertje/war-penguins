@@ -15,7 +15,7 @@ export default (io) => {
         let player = new Player(socket.id, 0, 0, 5, weapon);
         let xPos = Math.floor((Math.random() * (500 - player.width)) + 1);
         let yPos = Math.floor((Math.random() * (500 - player.height)) + 1);
-        player.setPosition(xPos, yPos);
+        player.position = {xPos, yPos};
         let world = addPlayerToWorld(player);
 
         socket.emit('self', player);
@@ -76,9 +76,9 @@ const handleKeyPress = (player, data, io) => {
     //Check for spacebar and fire bullet (player can't shoot while sprinting)
     if (Object.is(data.inputId, 32) && Object.is(player.pressed.sprint, false)) {
         if (data.state && !player.pressed.shooting) {
-            let position = player.getPosition();
+            let position = player.position;
 
-            if(weapon.getBulletsInMag() && !weapon.locked) {
+            if(weapon.bulletsInMag && !weapon.locked) {
                 let bullet = weapon.shoot(guid(), player.id, position.xPos, position.yPos, 10);
                 bullet.direction = player.direction;
 
