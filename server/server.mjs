@@ -15,7 +15,7 @@ const socketio = socket(io);
 app.use(express.static('app'));
 
 // Set port for server to listen to
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 8080);
 
 app.get('/', (req, res) => {
     res.sendFile('./app/index.html', { root: __dirname + '/..' });

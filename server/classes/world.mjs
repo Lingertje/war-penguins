@@ -1,3 +1,5 @@
+import { collides } from '../helpers/index.mjs';
+
 class World {
 
     /**
@@ -70,37 +72,25 @@ class World {
         return this.package;
     }
 
-    handleCollision (bullet, players) {
+    async handleCollision (bullet, players) {
         for(let pid in players) { 
             const player = players[pid];
             const shooter = this.getPlayer(bullet.playerId);
 
             if (player.id !== bullet.playerId && player.alive) {
-                console.log(this.collides(bullet, player));
-                if (this.collides(bullet, player)) {
-                    shooter.weapon.deleteBullet(bullet.id)
-                        .then(result => {
-                            if (result.length) {
-                                player.takeDamage(bullet.dmg)
+                if (collides(bullet, player)) {
+                    const result = await shooter.weapon.deleteBullet(bullet.id)
 
-                                if(player && player.health <= 0){
-                                    shooter.kills += 1;
-                                    player.alive = false;
-                                }
-                            }
-                        }); //Remove bullet from the player that fired it
+                    if (result.length) {
+                        if(player && player.takeDamage(bullet.dmg) <= 0){
+                            shooter.kills += 1;
+                            player.alive = false;
+                        }
+                    }
                 }
             }
         };
     }
-
-    collides (object1, object2) {
-        return object1.xPos < object2.xPos + object2.width &&
-            object1.xPos + object1.width > object2.xPos &&
-            object1.yPos < object2.yPos + object2.height &&
-            object1.yPos + object1.height > object2.yPos;
-    }
-
 }
 
 export default World;
