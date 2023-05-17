@@ -18,6 +18,10 @@ window.onload = function () {
     cui.height = canvas.height;
     var ctxui = cui.getContext('2d');
 
+    socket.on('world', data => {
+        document.querySelector('.js-world-id').href = `${window.location.href}?world=${data}`;
+    })
+
     socket.on('self', data => {
         playerSelf = data;
     });

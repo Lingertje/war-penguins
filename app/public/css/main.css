@@ -1,34 +1,51 @@
+:root {
+    color-scheme: light dark;
+    
+    --primary-color: #d7d7d7;
+    --font-color: #272b27;
+    --link-color: #0072E5;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary-color: #272b27;
+        --font-color: var(--font-color);
+        --link-color: #0072E5;
+    }
+}
+
 html {
     font-size: 16px;
 }
 
 body{
     font-family: "Arial";
-    background-color: #272b27;
+    background-color: var(--primary-color);
 }
 
 h1{
     text-align: center;
-    color: #fff;
+    color: var(--font-color);
     font-size: 3rem;
     margin: 1rem 0;
 }
 
 h2 {
     text-align: center;
-    color: #fff;
+    color: var(--font-color);
     font-size: 1.5rem;
     font-weight: 300;
     margin: 0.5rem 0;
 }
 
 a {
-    color: #0072E5;
+    color: var(--link-color);
     text-underline-offset: 2px;
 }
 
 .game{
     width: 800px;
+    height: 600px;
     position: relative;
     margin: 80px auto;
 }

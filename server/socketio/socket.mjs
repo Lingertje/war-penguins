@@ -17,17 +17,21 @@ export default (io) => {
         let yPos = Math.floor((Math.random() * (500 - player.height)) + 1);
         player.position = {xPos, yPos};
         let world = addPlayerToWorld(player);
+        socket.join(world.id);
+
+        socket.emit('world', world.id);
 
         setTimeout(() => {
             socket.emit('self', player);
         }, 50);
 
-        //Emit to everyone except the current socket that a user has connected
-        socket.broadcast.emit('connected', 'A user has connected.');
+
+        //Emit to everyone except the current socket that a player has connected
+        socket.to(world.id).emit('connected', 'A player has connected.');
 
         socket.on('keyPress', data => {
             if (Object.is(player.alive, true)) {
-                handleKeyPress(player, data, io);
+                handleKeyPress(player, data, io, world);
             }
         });
 
@@ -35,12 +39,12 @@ export default (io) => {
            delete SOCKET_LIST[socket.id];
            world.deletePlayer(socket.id);
 
-           socket.broadcast.emit('disconnected', 'A user has disconnected.');
+           socket.to(world.id).emit('disconnected', 'A player has disconnected.');
         });
     });
 };
 
-const handleKeyPress = (player, data, io) => {
+const handleKeyPress = (player, data, io, world) => {
     let weapon = player.weapon;
 
     //Check for arrow keys and wasd keys
@@ -67,9 +71,9 @@ const handleKeyPress = (player, data, io) => {
                 bullet.direction = player.direction;
 
                 weapon.bullets.push(bullet);
-                io.sockets.emit('gunshot', {fileName: 'gunshot.wav', xPos: player.xPos, yPos: player.yPos});
+                io.sockets.to(world.id).emit('gunshot', {fileName: 'gunshot.wav', xPos: player.xPos, yPos: player.yPos});
             } else {
-                io.sockets.emit('emptyShot', {fileName: 'emptyShot.wav', xPos: player.xPos, yPos: player.yPos});
+                io.sockets.to(world.id).emit('emptyShot', {fileName: 'emptyShot.wav', xPos: player.xPos, yPos: player.yPos});
             }
         }
 
@@ -85,7 +89,7 @@ const handleKeyPress = (player, data, io) => {
     if (Object.is(data.inputId, 82)) {
         if(data.state && !weapon.pressed.reload && weapon.bulletsInMag !== 30 && !weapon.locked) {
             weapon.reload();
-            io.sockets.emit('reload', {fileName: 'reload.wav', xPos: player.xPos, yPos: player.yPos});
+            io.sockets.to(world.id).emit('reload', {fileName: 'reload.wav', xPos: player.xPos, yPos: player.yPos});
         }
 
         weapon.pressed.reload = data.state;
