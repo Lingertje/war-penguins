@@ -7,19 +7,24 @@ const server = http.createServer(app);
 import { Server } from 'socket.io';
 const io = new Server(server);
 
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 // Import files
 import socket from './socketio/socket.mjs';
-const socketio = socket(io);
-
-// Serve static content
-app.use(express.static('app/public'));
+socket(io);
 
 // Set port for server to listen to
 app.set('port', process.env.PORT || 8080);
 
 app.get('/', (req, res) => {
-    res.sendFile('./app/index.html', { root: __dirname + '/..' });
+    res.sendFile(`app/public/index.html`, { root: __dirname + '/..' });
 });
+
+// Serve static content
+app.use(express.static('app/public'));
 
 server.listen(app.get('port'), () => {
     console.log('server is listening on  *:' + app.get('port'));
