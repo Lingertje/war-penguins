@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"target": "ES2015",
+		"module": "NodeNext",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitAny": true,
+		"rootDir": "server",
+		"outDir": "dist",
+	},
+	"include": ["server/**/*.mts"],
+	"exclude": [
+        "node_modules"
+	]
+}

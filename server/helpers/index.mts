@@ -1,4 +1,4 @@
-function collides (object1, object2) {
+function collides (object1: any, object2: any) {
 	return object1.xPos < object2.xPos + object2.width &&
 		object1.xPos + object1.width > object2.xPos &&
 		object1.yPos < object2.yPos + object2.height &&
