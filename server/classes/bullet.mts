@@ -1,6 +1,12 @@
 import Entity from './entity.mjs';
 
 class Bullet extends Entity {
+    id;
+    playerId;
+    dmg;
+    width;
+    height;
+    distance;
 
     /**
      * Represents a bullet

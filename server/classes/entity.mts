@@ -1,4 +1,8 @@
 class Entity {
+    xPos;
+    yPos;
+    maxSpd;
+    direction;
 
     /**
      * Abstract class that represents an entity

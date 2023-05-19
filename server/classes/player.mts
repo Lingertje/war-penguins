@@ -1,7 +1,15 @@
 import Entity from './entity.mjs';
 
 class Player extends Entity {
-
+    id;
+    width;
+    height;
+    alive;
+    health;
+    kills;
+    weapon;
+    pressed;
+    
     /**
      * Represents a player
      * @constructor

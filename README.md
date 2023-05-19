@@ -8,7 +8,7 @@ To run the project you need to have [Node.js](https://nodejs.org/en/) installed 
 
 1. Clone the project
 2. Run `yarn` to install the dependencies
-3. Run `yarn start` or `yarn start:nodemon` to start the server
+3. Run `yarn dev` or `yarn dev:nodemon` to start a local server
 4. Open your browser and go to `http://localhost:3000`
 5. Enjoy!
 

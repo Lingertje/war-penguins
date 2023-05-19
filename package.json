@@ -4,23 +4,25 @@
   "description": "War Pengiuns is a multiplayer game made with HTML5 and Node.js",
   "author": "Mart Linger",
   "scripts": {
-    "start": "node server/server.mjs",
-    "start:nodemon": "nodemon server/server.mjs"
+    "build": "tsc --project tsconfig.json",
+    "dev": "ts-node-esm server/server.mts",
+    "dev:nodemon": "nodemon server/server.mts --exec ts-node-esm",
+    "start": "node dist/server.mjs"
   },
   "dependencies": {
+    "@types/express": "4.17.17",
     "@types/node": "20.2.1",
     "dotenv": "8.2.0",
     "express": "4.18.2",
     "lodash": "4.17.20",
     "socket.io": "4.6.1",
+    "ts-node": "10.9.1",
     "winston": "3.3.3"
   },
   "devDependencies": {
-    "@types/express": "4.17.17",
     "typescript": "5.0.4"
   },
   "engines": {
     "node": ">=18.16.0"
-  },
-  "type": "commonjs"
+  }
 }

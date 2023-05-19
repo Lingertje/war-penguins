@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import express from 'express';
-const app = express();
+import express, { Express, Request, Response } from 'express';
+const app: Express = express();
 import * as http from 'http';
 const server = http.createServer(app);
 import { Server } from 'socket.io';
@@ -19,7 +19,7 @@ socket(io);
 // Set port for server to listen to
 app.set('port', process.env.PORT || 8080);
 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
     res.sendFile(`app/public/index.html`, { root: __dirname + '/..' });
 });
 

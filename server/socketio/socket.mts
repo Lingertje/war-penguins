@@ -3,7 +3,7 @@ import Player from '../classes/player.mjs';
 import Weapon from '../classes/weapon.mjs';
 
 let SOCKET_LIST = {};
-let WORLD_LIST = [];
+let WORLD_LIST: Array<any> = [];
 
 export default (io) => {
 

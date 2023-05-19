@@ -1,12 +1,16 @@
 {
+	"ts-node": {
+		"transpileOnly": true,
+	},
 	"compilerOptions": {
-		"target": "ES2015",
+		"target": "ES2020",
 		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-		"noImplicitAny": true,
+		"noImplicitAny": false,
 		"rootDir": "server",
 		"outDir": "dist",
 	},

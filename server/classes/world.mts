@@ -1,6 +1,11 @@
 import { collides } from '../helpers/index.mjs';
 
 class World {
+    id;
+    players;
+    playerCount;
+    playerMax;
+    package;
 
     /**
      * Represents a world

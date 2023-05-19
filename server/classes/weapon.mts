@@ -2,7 +2,15 @@ import _ from 'lodash';
 import Bullet from './bullet.mjs';
 
 class Weapon {
-
+    id;
+    type;
+    range;
+    magSize;
+    bulletsInMag;
+    locked;
+    bullets;
+    pressed;
+    
     /**
     * Represents a weapon
     * @constructor
