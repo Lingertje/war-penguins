@@ -53,7 +53,7 @@ class World {
     update (): Array<Player> {
         const playerArray: Array<Player> = [];
 
-        for (let [pid, player] of this.players) {
+        for (let [, player] of this.players) {
             const weapon = player.weapon;
             const bullets = weapon.bullets;
 
@@ -73,9 +73,8 @@ class World {
         return playerArray;
     }
 
-    async handleCollision (bullet: Bullet, players: any): Promise<void> {
-        for(let pid in players) { 
-            const player: Player = players[pid];
+    async handleCollision (bullet: Bullet, players: Map<string, Player>): Promise<void> {
+        for(let [, player] of players) { 
             const shooter = this.getPlayer(bullet.playerId) as Player;
 
             if (player.id !== bullet.playerId && player.alive) {
