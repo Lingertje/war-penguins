@@ -1,11 +1,13 @@
+import { Server } from 'socket.io';
+
 import World from '../classes/world.mjs';
 import Player from '../classes/player.mjs';
 import Weapon from '../classes/weapon.mjs';
 
 let SOCKET_LIST = {};
-let WORLD_LIST = [];
+let WORLD_LIST: Array<World> = [];
 
-export default (io) => {
+export default (io: Server) => {
 
     io.on('connection', (socket) => {
         SOCKET_LIST[socket.id] = socket;
@@ -44,7 +46,7 @@ export default (io) => {
     });
 };
 
-const handleKeyPress = (player, data, io, world) => {
+const handleKeyPress = (player: Player, data, io: Server, world: World) => {
     let weapon = player.weapon;
 
     //Check for arrow keys and wasd keys
@@ -66,14 +68,14 @@ const handleKeyPress = (player, data, io, world) => {
         if (data.state && !player.pressed.shooting) {
             let position = player.position;
 
-            if(weapon.bulletsInMag && !weapon.locked) {
+            try {
                 let bullet = weapon.shoot(guid(), player.id, position.xPos, position.yPos, 10);
                 bullet.direction = player.direction;
 
                 weapon.bullets.push(bullet);
-                io.sockets.to(world.id).emit('gunshot', {fileName: 'gunshot.wav', xPos: player.xPos, yPos: player.yPos});
-            } else {
-                io.sockets.to(world.id).emit('emptyShot', {fileName: 'emptyShot.wav', xPos: player.xPos, yPos: player.yPos});
+                io.sockets.to(world.id).emit('gunshot', {fileName: 'gunshot.wav', xPos: position.xPos, yPos: position.yPos});
+            } catch (e) {
+                io.sockets.to(world.id).emit('emptyShot', {fileName: 'emptyShot.wav', xPos: position.xPos, yPos: position.yPos});
             }
         }
 
@@ -88,8 +90,9 @@ const handleKeyPress = (player, data, io, world) => {
     //Check for r (reload)
     if (Object.is(data.inputId, 'r')) {
         if(data.state && !weapon.pressed.reload && weapon.bulletsInMag !== 30 && !weapon.locked) {
+            let position = player.position;
             weapon.reload();
-            io.sockets.to(world.id).emit('reload', {fileName: 'reload.wav', xPos: player.xPos, yPos: player.yPos});
+            io.sockets.to(world.id).emit('reload', {fileName: 'reload.wav', xPos: position.xPos, yPos: position.yPos});
         }
 
         weapon.pressed.reload = data.state;
@@ -97,8 +100,8 @@ const handleKeyPress = (player, data, io, world) => {
 }
 
 // Add player to a world
-const addPlayerToWorld = (player) => {
-    let world;
+const addPlayerToWorld = (player: Player): World => {
+    let world: World;
 
     if (WORLD_LIST.length === 0 || WORLD_LIST[WORLD_LIST.length - 1].playerCount >= WORLD_LIST[WORLD_LIST.length - 1].playerMax) { // If there is no world or latest world has more than 4 players create a new world
         world = new World(guid(), 4); // World instance
@@ -112,7 +115,7 @@ const addPlayerToWorld = (player) => {
 }
 
 // Generates a random ID
-const guid = () => {
+const guid = (): string => {
     function s4() {
         return Math.floor((1 + Math.random()) * 0x10000)
             .toString(16)

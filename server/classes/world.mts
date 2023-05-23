@@ -1,6 +1,12 @@
 import { collides } from '../helpers/index.mjs';
+import Bullet from './bullet.mjs';
+import Player from './player.mjs';
 
 class World {
+    id: string;
+    players: any; // TODO: can we change this to an array?
+    playerCount: number;
+    playerMax: number;
 
     /**
      * Represents a world
@@ -17,9 +23,8 @@ class World {
     /**
      *
      * @description Add player to the world
-     * @param {Object} player Object representing the player
      */
-    addPlayer (player) {
+    addPlayer (player: Player): void {
         this.players[player.id] = player;
         this.playerCount += 1;
     }
@@ -27,18 +32,16 @@ class World {
     /**
      *
      * @description Return requested player
-     * @param {string} playerid Id of the player id
      */
-    getPlayer (playerId) {
+    getPlayer (playerId: string): Player {
         return this.players[playerId];
     }
 
     /**
      *
      * @description Delete player to the world
-     * @param {string} playerid Id of the player id
      */
-    deletePlayer (playerId) {
+    deletePlayer (playerId: string): void {
         delete this.players[playerId];
         this.playerCount -= 1;
     }
@@ -46,10 +49,9 @@ class World {
     /**
      *
      * @description Updates all the players in the world
-     * @returns {Array} package Package containing all the updated users
      */
-    update () {
-        this.package = [];
+    update (): Array<Player> {
+        const playerArray: Array<Player> = [];
 
         for (let p in this.players) {
             const player = this.players[p];
@@ -66,15 +68,15 @@ class World {
 
             weapon.updateBullets();
 
-            this.package.push(player);
+            playerArray.push(player);
         }
 
-        return this.package;
+        return playerArray;
     }
 
-    async handleCollision (bullet, players) {
+    async handleCollision (bullet: Bullet, players: any): Promise<void> {
         for(let pid in players) { 
-            const player = players[pid];
+            const player: Player = players[pid];
             const shooter = this.getPlayer(bullet.playerId);
 
             if (player.id !== bullet.playerId && player.alive) {

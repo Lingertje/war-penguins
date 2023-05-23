@@ -1,15 +1,20 @@
 import _ from 'lodash';
 import Bullet from './bullet.mjs';
 
-class Weapon {
-
+export default class Weapon {
+    id: string;
+    type: string;
+    range: number;
+    magSize: number;
+    bulletsInMag: number;
+    locked: boolean;
+    bullets: Array<Bullet>;
+    pressed: any;
+    
     /**
     * Represents a weapon
-    * @constructor
-    * @param {string} id The weapon's id (Most of the time this is the socket id)
-    * @param {number} magSize The ammount of bullets that can fit in the weapons magazine
      */
-    constructor (id, magSize, range) {
+    constructor (id: string, magSize: number, range: number) {
         this.id = id;
         this.type = 'semi';
         this.range = range;
@@ -25,24 +30,21 @@ class Weapon {
     /**
      *
      * @description Creates a new bullet object
-     * @returns {Bullet} returns the newly created bullet or false if the weapon is out of ammo
      */
-    shoot (id, playerId, xPos, yPos, maxSpd) {
-        if (this.bulletsInMag && Object.is(this.locked, false)) {
-            let bullet = new Bullet(id, playerId, xPos, yPos, maxSpd);
-            this.bulletsInMag--;
+    shoot (id: string, playerId: string, xPos: number, yPos: number, maxSpd: number): Bullet {
+        if (!this.bulletsInMag || Object.is(this.locked, true)) throw new Error('Weapon is out of ammo or locked');
 
-            return bullet;
-        }
+        let bullet = new Bullet(id, playerId, xPos, yPos, maxSpd);
+        this.bulletsInMag--;
 
-        return false;
+        return bullet;
     }
 
     /**
      *
      * @description Reloads the weapon and locks it for X seconds
      */
-    reload () {
+    reload (): void {
         this.locked = true; // Lock the weapon so you can't shoot while reloading
 
         setTimeout(() => {
@@ -55,7 +57,7 @@ class Weapon {
      *
      * @description Updates the bullets that a player has fired
      */
-    updateBullets () {
+    updateBullets (): void | Promise<Bullet[]> {
         for (var b in this.bullets) {
             var bullet = this.bullets[b];
 
@@ -69,14 +71,11 @@ class Weapon {
 
     /**
      *
-     * @param Id of the bullet that needs to be removed
      * @description Remove a bullet from a player
      */
-    deleteBullet (bulletId) {
+    deleteBullet (bulletId): Promise<Bullet[]> {
         const bullet = _.findIndex(this.bullets, { 'id': bulletId });
 
         return Promise.resolve(this.bullets.splice(bullet, 1)); //Remove bullet from array
     }
 }
-
-export default Weapon;
