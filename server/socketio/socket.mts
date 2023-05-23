@@ -131,8 +131,8 @@ setInterval(() => {
         let world = WORLD_LIST[i];
         let load = world.update();
 
-        for (let p in world.players) {
-            let socket = SOCKET_LIST[p];
+        for (let [ pid ] of world.players) {
+            let socket = SOCKET_LIST[pid];
             socket.emit('updatePosition', load);
         }
     }

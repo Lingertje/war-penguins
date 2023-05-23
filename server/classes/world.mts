@@ -4,7 +4,7 @@ import Player from './player.mjs';
 
 class World {
     id: string;
-    players: any; // TODO: can we change this to an array?
+    players: Map<string, Player>;
     playerCount: number;
     playerMax: number;
 
@@ -15,7 +15,7 @@ class World {
      */
     constructor (id, playerMax = 4) {
         this.id = id;
-        this.players = {};
+        this.players = new Map();
         this.playerCount = 0;
         this.playerMax = playerMax;
     }
@@ -25,7 +25,7 @@ class World {
      * @description Add player to the world
      */
     addPlayer (player: Player): void {
-        this.players[player.id] = player;
+        this.players.set(player.id, player);
         this.playerCount += 1;
     }
 
@@ -33,8 +33,8 @@ class World {
      *
      * @description Return requested player
      */
-    getPlayer (playerId: string): Player {
-        return this.players[playerId];
+    getPlayer (playerId: string): Player | null {
+        return this.players.get(playerId) ?? null;
     }
 
     /**
@@ -42,7 +42,7 @@ class World {
      * @description Delete player to the world
      */
     deletePlayer (playerId: string): void {
-        delete this.players[playerId];
+        this.players.delete(playerId);
         this.playerCount -= 1;
     }
 
@@ -53,8 +53,7 @@ class World {
     update (): Array<Player> {
         const playerArray: Array<Player> = [];
 
-        for (let p in this.players) {
-            const player = this.players[p];
+        for (let [pid, player] of this.players) {
             const weapon = player.weapon;
             const bullets = weapon.bullets;
 
@@ -77,7 +76,7 @@ class World {
     async handleCollision (bullet: Bullet, players: any): Promise<void> {
         for(let pid in players) { 
             const player: Player = players[pid];
-            const shooter = this.getPlayer(bullet.playerId);
+            const shooter = this.getPlayer(bullet.playerId) as Player;
 
             if (player.id !== bullet.playerId && player.alive) {
                 if (collides(bullet, player)) {
