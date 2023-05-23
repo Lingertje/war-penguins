@@ -1,24 +1,20 @@
 import Entity from './entity.mjs';
+import Weapon from './weapon.mjs';
 
 class Player extends Entity {
-    id;
-    width;
-    height;
-    alive;
-    health;
-    kills;
-    weapon;
-    pressed;
+    id: string;
+    width: number;
+    height: number;
+    alive: boolean;
+    health: number;
+    kills: number;
+    weapon: Weapon;
+    pressed: any;
     
     /**
      * Represents a player
-     * @constructor
-     * @param {string} id The player's id (Most of the time this is the socket id)
-     * @param {number} xPos Position of the player on the x axis
-     * @param {number} yPos Position of the player on the y axis
-     * @param {number} maxSpd The maximum of the player
      */
-    constructor (id, xPos, yPos, maxSpd, weapon) {
+    constructor (id: string, xPos: number, yPos: number, maxSpd: number, weapon: Weapon) {
         super(xPos, yPos, maxSpd);
 
         this.id = id;
@@ -42,7 +38,7 @@ class Player extends Entity {
      *
      * @description Checks if a certain key is pressed and updates the position accordingly
      */
-    updatePosition () {
+    updatePosition (): void {
         let position = this.position;
         let maxSpd = this.maxSpd;
 
@@ -71,11 +67,9 @@ class Player extends Entity {
     }
 
     /**
-     * @param dmg The ammount of damage the hit did
      * @description Lowers health of the player on hit
-     * @returns The current health of the player
      */
-    takeDamage (dmg) {
+    takeDamage (dmg: number): number {
         return this.health -= dmg;
     }
 }

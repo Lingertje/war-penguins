@@ -1,23 +1,18 @@
 import Entity from './entity.mjs';
 
-class Bullet extends Entity {
-    id;
-    playerId;
-    dmg;
-    width;
-    height;
-    distance;
+export default class Bullet extends Entity {
+    id: string;
+    playerId: string;
+    dmg: number;
+    width: number;
+    height: number;
+    distance: number;
 
     /**
-     * Represents a bullet
-     * @constructor
-     * @param {string} id The bullet's id
-     * @param {string} playerId The player's id (Most of the time this is the socket id)
-     * @param {number} xPos Position of the bullet on the x axis
-     * @param {number} yPos Position of the bullet on the y axis
-     * @param {number} maxSpd The maximum of the bullet
+     * 
+     * @description Represents a bullet
      */
-    constructor (id, playerId, xPos, yPos, maxSpd) {
+    constructor (id: string, playerId: string, xPos: number, yPos: number, maxSpd: number) {
         super(xPos, yPos, maxSpd);
 
         this.id = id;
@@ -32,7 +27,7 @@ class Bullet extends Entity {
      *
      * @description Checks if a certain key is pressed and updates the position accordingly
      */
-    updatePosition(){
+    updatePosition(): void {
         let position = this.position;
 
         this.distance += this.maxSpd;
@@ -56,11 +51,8 @@ class Bullet extends Entity {
     /**
      *
      * @description Checks if a bullet is out of the canvas
-     * @returns Boolean that corresponds whether a bullet is in or out of the window
      */
-    isOutWindow(){
+    isOutWindow(): boolean {
         return (this.xPos + this.width > 800 || this.xPos < -30 || this.yPos < -30 || this.yPos + this.width > 600);
     }
 }
-
-export default Bullet;
