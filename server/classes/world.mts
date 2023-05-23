@@ -11,9 +11,8 @@ class World {
     /**
      * Represents a world
      * @constructor
-     * @param {string} id The world's id
      */
-    constructor (id, playerMax = 4) {
+    constructor (id: string, playerMax = 4) {
         this.id = id;
         this.players = new Map();
         this.playerCount = 0;
@@ -74,7 +73,7 @@ class World {
     }
 
     async handleCollision (bullet: Bullet, players: Map<string, Player>): Promise<void> {
-        for(let [, player] of players) { 
+        for(let [, player] of players) {
             const shooter = this.getPlayer(bullet.playerId) as Player;
 
             if (player.id !== bullet.playerId && player.alive) {

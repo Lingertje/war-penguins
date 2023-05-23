@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import Bullet from './bullet.mjs';
 
 export default class Weapon {
@@ -10,7 +9,7 @@ export default class Weapon {
     locked: boolean;
     bullets: Array<Bullet>;
     pressed: any;
-    
+
     /**
     * Represents a weapon
      */
@@ -73,8 +72,8 @@ export default class Weapon {
      *
      * @description Remove a bullet from a player
      */
-    deleteBullet (bulletId): Promise<Bullet[]> {
-        const bullet = _.findIndex(this.bullets, { 'id': bulletId });
+    deleteBullet (bulletId: string): Promise<Bullet[]> {
+        const bullet = this.bullets.findIndex(bullet => bullet.id === bulletId);
 
         return Promise.resolve(this.bullets.splice(bullet, 1)); //Remove bullet from array
     }
