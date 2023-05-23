@@ -46,7 +46,7 @@ export default (io: Server) => {
     });
 };
 
-const handleKeyPress = (player: Player, data, io, world) => {
+const handleKeyPress = (player: Player, data, io: Server, world: World) => {
     let weapon = player.weapon;
 
     //Check for arrow keys and wasd keys
