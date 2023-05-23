@@ -2,7 +2,7 @@ import Bullet from './bullet.mjs';
 
 export default class Weapon {
     id: string;
-    type: string;
+    type: 'semi' | 'auto';
     range: number;
     magSize: number;
     bulletsInMag: number;

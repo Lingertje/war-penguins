@@ -1,16 +1,16 @@
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 
 import World from '../classes/world.mjs';
 import Player from '../classes/player.mjs';
 import Weapon from '../classes/weapon.mjs';
 
-let SOCKET_LIST = {};
+let SOCKET_LIST: Map<string, Socket> = new Map();
 let WORLD_LIST: Array<World> = [];
 
 export default (io: Server) => {
 
     io.on('connection', (socket) => {
-        SOCKET_LIST[socket.id] = socket;
+        SOCKET_LIST.set(socket.id, socket);
 
         // Instantiate new player object and add player to game world
         let weapon = new Weapon(guid(), 30, 500);
@@ -38,15 +38,15 @@ export default (io: Server) => {
         });
 
         socket.on('disconnect', () => {
-           delete SOCKET_LIST[socket.id];
-           world.deletePlayer(socket.id);
+        	SOCKET_LIST.delete(socket.id);
+        	world.deletePlayer(socket.id);
 
-           socket.to(world.id).emit('disconnected', 'A player has disconnected.');
+        	socket.to(world.id).emit('disconnected', 'A player has disconnected.');
         });
     });
 };
 
-const handleKeyPress = (player: Player, data, io: Server, world: World) => {
+const handleKeyPress = (player: Player, data: { inputId: string, state: boolean }, io: Server, world: World) => {
     let weapon = player.weapon;
 
     //Check for arrow keys and wasd keys
@@ -132,7 +132,7 @@ setInterval(() => {
         let load = world.update();
 
         for (let [ pid ] of world.players) {
-            let socket = SOCKET_LIST[pid];
+            let socket = SOCKET_LIST.get(pid) as Socket;
             socket.emit('updatePosition', load);
         }
     }
