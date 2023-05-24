@@ -1,4 +1,6 @@
-const socket = io();
+const socket = io({
+	transports:['websocket', 'polling']
+});
 
 const canvas = {
     width: 800,
