@@ -47,7 +47,7 @@ window.onload = function () {
         playAudio(data);
     });
 
-	socket.on('medkit', data => {
+	socket.on('consumable', data => {
 		cctx.clearRect(0, 0, canvas.width, canvas.height); //Clear the canvas
 		data.map(item => {
 			drawMedkit(item);

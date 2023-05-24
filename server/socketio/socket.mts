@@ -28,7 +28,7 @@ export default (io: Server) => {
 
         setTimeout(() => {
 			socket.emit('self', player);
-			socket.emit('medkit', Array.from(world.consumables.values()));
+			socket.emit('consumable', Array.from(world.consumables.values()));
         }, 50);
 
 
@@ -120,7 +120,7 @@ const handleKeyPress = (player: Player, data: { inputId: string, state: boolean 
 						player.weapon.locked = false;
 					}, 1500)
 
-					IO.to(world.id).emit('medkit', Array.from(world.consumables.values()));
+					IO.to(world.id).emit('consumable', Array.from(world.consumables.values()));
 					socket.emit('medkitPickup', {fileName: 'medkit.wav', xPos: position.xPos, yPos: position.yPos});
 
 				}
@@ -142,8 +142,7 @@ const addPlayerToWorld = (player: Player): World => {
         world = WORLD_LIST[WORLD_LIST.length - 1]; // Add player to latest world
     }
 
-    world.addPlayer(player); // Add player to game world
-    return world;
+    return world.addPlayer(player); // Add player to game world
 }
 
 // Send every connected socket package data 30 times a second
@@ -162,15 +161,15 @@ setInterval(() => {
 
 setInterval(() => {
 	for (let i in WORLD_LIST) {
-		const randomNum1 = Math.floor((Math.random() * 20 + 1));
-		const randomNum2 = Math.floor((Math.random() * 20 + 1));
-		if (randomNum1 !== randomNum2) continue;
-
 		let world = WORLD_LIST[i];
-		const consumable = new Medkit(guid(), Math.floor((Math.random() * (500 - 50)) + 1), Math.floor((Math.random() * (500 - 50)) + 1));
+		const randomNum1 = Math.floor((Math.random() * 25 + 1));
+		const randomNum2 = Math.floor((Math.random() * 25 + 1));
+		if (randomNum1 !== randomNum2 || world.consumables.size >= 4) continue;
 
+		const consumable = new Medkit(guid(), Math.floor((Math.random() * (500 - 50)) + 1), Math.floor((Math.random() * (500 - 50)) + 1));
 		world.addConsumable(consumable);
-		IO.to(world.id).emit('medkit', Array.from(world.consumables.values()));
+
+		IO.to(world.id).emit('consumable', Array.from(world.consumables.values()));
 	}
 
 }, 1000); // Runs each second

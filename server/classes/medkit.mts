@@ -1,7 +1,11 @@
 import Entity from './entity.mjs';
 import type Player from './player.mjs';
 
-export default class Medkit extends Entity {
+export interface Consumable extends Entity {
+	use: (player: Player) => void;
+}
+
+export default class Medkit extends Entity implements Consumable {
 	id: string;
 	healAmount: number;
 

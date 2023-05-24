@@ -1,14 +1,14 @@
 import { collides } from '../helpers/index.mjs';
 import type Bullet from './bullet.mjs';
 import type Player from './player.mjs';
-import type Medkit from './medkit.mjs';
+import type Consumable from './medkit.mjs';
 
 class World {
     id: string;
     players: Map<string, Player>;
     playerCount: number;
     playerMax: number;
-	consumables: Map<string, Medkit>;
+	consumables: Map<string, Consumable>;
 
     /**
      * Represents a world
@@ -26,9 +26,10 @@ class World {
      *
      * @description Add player to the world
      */
-    addPlayer (player: Player): void {
+    addPlayer (player: Player): World {
         this.players.set(player.id, player);
         this.playerCount += 1;
+		return this;
     }
 
     /**
@@ -52,7 +53,7 @@ class World {
      *
      * @description Add consumable to the world
      */
-    addConsumable (consumable: Medkit): void {
+    addConsumable (consumable: Consumable): void {
         this.consumables.set(consumable.id, consumable);
     }
 
@@ -60,7 +61,7 @@ class World {
      *
      * @description Return requested consumable
      */
-    getConsumable (consumableId: string): Medkit | null {
+    getConsumable (consumableId: string): Consumable | null {
         return this.consumables.get(consumableId) ?? null;
     }
 
