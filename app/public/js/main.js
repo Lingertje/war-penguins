@@ -8,10 +8,16 @@ const canvas = {
 let playerSelf;
 const characterImg = new Image();
 const characterSelf = new Image();
+const medkitImg = new Image();
 characterImg.src = 'img/character.png';
 characterSelf.src = 'img/character_self.png';
+medkitImg.src = 'img/medkit.png';
 
 window.onload = function () {
+	var cc = document.getElementById('canvas-consumables');
+	cc.width = canvas.width;
+	cc.height = canvas.height;
+	var cctx = cc.getContext('2d');
     var c = document.getElementById('canvas')
     c.width = canvas.width;
     c.height = canvas.height;
@@ -41,11 +47,22 @@ window.onload = function () {
         playAudio(data);
     });
 
+	socket.on('medkit', data => {
+		cctx.clearRect(0, 0, canvas.width, canvas.height); //Clear the canvas
+		data.map(item => {
+			drawMedkit(item);
+		})
+	});
+
+	socket.on('medkitPickup', data => {
+		playAudio(data);
+	})
+
     socket.on('updatePosition', players => {
         ctx.clearRect(0, 0, canvas.width, canvas.height); //Clear the canvas
         ctxui.clearRect(0, 0, canvas.width, canvas.height); //Clear the canvas
 
-        players.forEach( player => {      
+        players.forEach( player => {
             var bullets = player.weapon.bullets;
 
             // Draw a healthbar
@@ -92,6 +109,10 @@ window.onload = function () {
         ctx.fillRect(bullet.xPos + 20, bullet.yPos + 15, bullet.width, bullet.height);
     }
 
+	function drawMedkit (medkit) {
+		cctx.drawImage(medkitImg, medkit.xPos, medkit.yPos, medkit.width, medkit.height);
+	}
+
     function drawUI () {
         ctxui.font = "24px Arial";
         ctxui.fillStyle = "#fff";
@@ -128,6 +149,7 @@ window.onload = function () {
             case 'ArrowDown':
             case ' ':
             case 'r':
+			case 'e':
                 socket.emit('keyPress', { inputId: event.key, state: true });
                 break;
         }
@@ -146,6 +168,7 @@ window.onload = function () {
             case 'ArrowDown':
             case ' ':
             case 'r':
+			case 'e':
                 socket.emit('keyPress', { inputId: event.key, state: false });
                 break;
         }

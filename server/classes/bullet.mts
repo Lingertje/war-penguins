@@ -4,23 +4,21 @@ export default class Bullet extends Entity {
     id: string;
     playerId: string;
     dmg: number;
-    width: number;
-    height: number;
     distance: number;
+	maxSpd: number;
 
     /**
-     * 
+     *
      * @description Represents a bullet
      */
     constructor (id: string, playerId: string, xPos: number, yPos: number, maxSpd: number) {
-        super(xPos, yPos, maxSpd);
+        super(xPos, yPos, 10, 10);
 
         this.id = id;
         this.playerId = playerId;
         this.dmg = 10;
-        this.width = 10;
-        this.height = 10;
         this.distance = 0;
+		this.maxSpd = maxSpd;
     }
 
     /**

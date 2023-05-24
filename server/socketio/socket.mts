@@ -3,12 +3,15 @@ import { Server, Socket } from 'socket.io';
 import World from '../classes/world.mjs';
 import Player from '../classes/player.mjs';
 import Weapon from '../classes/weapon.mjs';
+import { collides, guid } from '../helpers/index.mjs';
+import Medkit from '../classes/medkit.mjs';
 
 let SOCKET_LIST: Map<string, Socket> = new Map();
 let WORLD_LIST: Array<World> = [];
+let IO: Server;
 
 export default (io: Server) => {
-
+	IO = io;
     io.on('connection', (socket) => {
         SOCKET_LIST.set(socket.id, socket);
 
@@ -24,7 +27,8 @@ export default (io: Server) => {
         socket.emit('world', world.id);
 
         setTimeout(() => {
-            socket.emit('self', player);
+			socket.emit('self', player);
+			socket.emit('medkit', Array.from(world.consumables.values()));
         }, 50);
 
 
@@ -97,6 +101,34 @@ const handleKeyPress = (player: Player, data: { inputId: string, state: boolean 
 
         weapon.pressed.reload = data.state;
     }
+
+	// Check for e (use medkit)
+	if (Object.is(data.inputId, 'e')) {
+		if (data.state) {
+			const consumables = world.consumables;
+
+			for (let [key, consumable] of consumables) {
+				if (collides(player, consumable)) {
+					const socket = SOCKET_LIST.get(player.id) as Socket;
+					const position = player.position;
+
+					player.weapon.locked = true;
+					consumable.use(player);
+					world.deleteConsumable(key);
+
+					setTimeout(() => {
+						player.weapon.locked = false;
+					}, 1500)
+
+					IO.to(world.id).emit('medkit', Array.from(world.consumables.values()));
+					socket.emit('medkitPickup', {fileName: 'medkit.wav', xPos: position.xPos, yPos: position.yPos});
+
+				}
+			}
+
+
+		}
+	}
 }
 
 // Add player to a world
@@ -114,17 +146,6 @@ const addPlayerToWorld = (player: Player): World => {
     return world;
 }
 
-// Generates a random ID
-const guid = (): string => {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-        s4() + '-' + s4() + s4() + s4();
-}
-
 // Send every connected socket package data 30 times a second
 setInterval(() => {
     for (let i in WORLD_LIST) {
@@ -137,7 +158,22 @@ setInterval(() => {
         }
     }
 
-}, 1000 / 30); // each 30 times a second
+}, 1000 / 30); // Runs 30 times a second
+
+setInterval(() => {
+	for (let i in WORLD_LIST) {
+		const randomNum1 = Math.floor((Math.random() * 20 + 1));
+		const randomNum2 = Math.floor((Math.random() * 20 + 1));
+		if (randomNum1 !== randomNum2) continue;
+
+		let world = WORLD_LIST[i];
+		const consumable = new Medkit(guid(), Math.floor((Math.random() * (500 - 50)) + 1), Math.floor((Math.random() * (500 - 50)) + 1));
+
+		world.addConsumable(consumable);
+		IO.to(world.id).emit('medkit', Array.from(world.consumables.values()));
+	}
+
+}, 1000); // Runs each second
 
 // Remove empty worlds from WORLD_LIST array
 setInterval(() => {
@@ -150,4 +186,4 @@ setInterval(() => {
         }
     }
 
-}, 1000 * 30); // each 30 seconds
+}, 1000 * 30); // Runs each 30 seconds

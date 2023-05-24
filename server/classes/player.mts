@@ -1,25 +1,22 @@
 import Entity from './entity.mjs';
-import Weapon from './weapon.mjs';
+import type Weapon from './weapon.mjs';
 
 class Player extends Entity {
     id: string;
-    width: number;
-    height: number;
     alive: boolean;
     health: number;
     kills: number;
     weapon: Weapon;
     pressed: any;
-    
+	maxSpd: number;
+
     /**
      * Represents a player
      */
     constructor (id: string, xPos: number, yPos: number, maxSpd: number, weapon: Weapon) {
-        super(xPos, yPos, maxSpd);
+        super(xPos, yPos, 50, 50);
 
         this.id = id;
-        this.width = 50;
-        this.height = 50;
         this.alive = true;
         this.health = 100;
         this.kills = 0;
@@ -32,6 +29,7 @@ class Player extends Entity {
             sprint  : false,
             shooting: false
         };
+		this.maxSpd = maxSpd;
     }
 
     /**
@@ -72,6 +70,16 @@ class Player extends Entity {
     takeDamage (dmg: number): number {
         return this.health -= dmg;
     }
+
+	heal(amount: number): void {
+		if (this.health === 100) return;
+
+		if (this.health + amount > 100) {
+			this.health = 100;
+		} else {
+			this.health += amount;
+		}
+	}
 }
 
 export default Player;

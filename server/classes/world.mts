@@ -1,12 +1,14 @@
 import { collides } from '../helpers/index.mjs';
-import Bullet from './bullet.mjs';
-import Player from './player.mjs';
+import type Bullet from './bullet.mjs';
+import type Player from './player.mjs';
+import type Medkit from './medkit.mjs';
 
 class World {
     id: string;
     players: Map<string, Player>;
     playerCount: number;
     playerMax: number;
+	consumables: Map<string, Medkit>;
 
     /**
      * Represents a world
@@ -17,6 +19,7 @@ class World {
         this.players = new Map();
         this.playerCount = 0;
         this.playerMax = playerMax;
+		this.consumables = new Map();
     }
 
     /**
@@ -38,11 +41,35 @@ class World {
 
     /**
      *
-     * @description Delete player to the world
+     * @description Delete player from the world
      */
     deletePlayer (playerId: string): void {
         this.players.delete(playerId);
         this.playerCount -= 1;
+    }
+
+	/**
+     *
+     * @description Add consumable to the world
+     */
+    addConsumable (consumable: Medkit): void {
+        this.consumables.set(consumable.id, consumable);
+    }
+
+    /**
+     *
+     * @description Return requested consumable
+     */
+    getConsumable (consumableId: string): Medkit | null {
+        return this.consumables.get(consumableId) ?? null;
+    }
+
+    /**
+     *
+     * @description Delete consumable to the world
+     */
+    deleteConsumable (consumableId: string): void {
+        this.consumables.delete(consumableId);
     }
 
     /**

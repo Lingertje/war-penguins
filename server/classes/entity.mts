@@ -1,20 +1,22 @@
 export default class Entity {
-    protected xPos: number; 
+    protected xPos: number;
     protected yPos: number;
-    maxSpd: number;
+ 	width: number;
+	height: number;
     direction?: string;
 
     /**
      * Abstract class that represents an entity
      */
-    constructor (xPos: number, yPos: number, maxSpd: number) {
+    constructor (xPos: number, yPos: number, width: number, height: number) {
         if(new.target.name === 'Entity'){
             throw new TypeError('Abstract class \'Entity\' cannot be instantiated directly.');
         }
 
         this.xPos = xPos;
         this.yPos = yPos;
-        this.maxSpd = maxSpd;
+		this.width = width;
+		this.height = height;
         this.direction;
     }
 
