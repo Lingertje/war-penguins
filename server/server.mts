@@ -14,7 +14,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Import files
 import socket from './socketio/socket.mjs';
-socket(io);
+socket();
 
 // Set port for server to listen to
 app.set('port', process.env.PORT || 8080);
@@ -29,3 +29,6 @@ app.use(express.static('app/public'));
 server.listen(app.get('port'), () => {
     console.log('server is listening on  *:' + app.get('port'));
 });
+
+
+export { io };

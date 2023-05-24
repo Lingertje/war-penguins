@@ -5,13 +5,12 @@ import Player from '../classes/player.mjs';
 import Weapon from '../classes/weapon.mjs';
 import { collides, guid } from '../helpers/index.mjs';
 import Medkit from '../classes/medkit.mjs';
+import { io } from '../server.mjs';
 
 let SOCKET_LIST: Map<string, Socket> = new Map();
 let WORLD_LIST: Array<World> = [];
-let IO: Server;
 
-export default (io: Server) => {
-	IO = io;
+export default () => {
     io.on('connection', (socket) => {
         SOCKET_LIST.set(socket.id, socket);
 
@@ -120,7 +119,7 @@ const handleKeyPress = (player: Player, data: { inputId: string, state: boolean 
 						player.weapon.locked = false;
 					}, 1500)
 
-					IO.to(world.id).emit('consumable', Array.from(world.consumables.values()));
+					io.to(world.id).emit('consumable', Array.from(world.consumables.values()));
 					socket.emit('medkitPickup', {fileName: 'medkit.wav', xPos: position.xPos, yPos: position.yPos});
 
 				}
@@ -147,21 +146,17 @@ const addPlayerToWorld = (player: Player): World => {
 
 // Send every connected socket package data 30 times a second
 setInterval(() => {
-    for (let i in WORLD_LIST) {
-        let world = WORLD_LIST[i];
-        let load = world.update();
+    for (let world of WORLD_LIST) {
+		if (!world) continue; // Prevent edge case where world is deleted but interval is still running
 
-        for (let [ pid ] of world.players) {
-            let socket = SOCKET_LIST.get(pid) as Socket;
-            socket.emit('updatePosition', load);
-        }
+        let load = world.update();
+		io.to(world.id).emit('updatePosition', load);
     }
 
 }, 1000 / 30); // Runs 30 times a second
 
 setInterval(() => {
-	for (let i in WORLD_LIST) {
-		let world = WORLD_LIST[i];
+	for (let world of WORLD_LIST) {
 		const randomNum1 = Math.floor((Math.random() * 25 + 1));
 		const randomNum2 = Math.floor((Math.random() * 25 + 1));
 		if (randomNum1 !== randomNum2 || world.consumables.size >= 4) continue;
@@ -169,18 +164,16 @@ setInterval(() => {
 		const consumable = new Medkit(guid(), Math.floor((Math.random() * (500 - 50)) + 1), Math.floor((Math.random() * (500 - 50)) + 1));
 		world.addConsumable(consumable);
 
-		IO.to(world.id).emit('consumable', Array.from(world.consumables.values()));
+		io.to(world.id).emit('consumable', Array.from(world.consumables.values()));
 	}
 
 }, 1000); // Runs each second
 
 // Remove empty worlds from WORLD_LIST array
 setInterval(() => {
-    for (let i in WORLD_LIST) {
-        let world = WORLD_LIST[i];
-
+    for (let [index, world] of WORLD_LIST.entries()) {
         if (!world.playerCount) {
-            delete WORLD_LIST[i];
+            delete WORLD_LIST[index];
             console.log('World (id: ' + world.id + ') deleted with ' + world.playerCount + ' players');
         }
     }
