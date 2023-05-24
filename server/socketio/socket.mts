@@ -23,9 +23,9 @@ export default () => {
         let world = addPlayerToWorld(player);
         socket.join(world.id);
 
-        socket.emit('world', world.id);
 
         setTimeout(() => {
+			socket.emit('world', world.id);
 			socket.emit('self', player);
 			socket.emit('consumable', Array.from(world.consumables.values()));
         }, 50);
@@ -134,7 +134,7 @@ const handleKeyPress = (player: Player, data: { inputId: string, state: boolean 
 const addPlayerToWorld = (player: Player): World => {
     let world: World;
 
-    if (WORLD_LIST.length === 0 || WORLD_LIST[WORLD_LIST.length - 1].playerCount >= WORLD_LIST[WORLD_LIST.length - 1].playerMax) { // If there is no world or latest world has more than 4 players create a new world
+    if (WORLD_LIST.length === 0 || WORLD_LIST[WORLD_LIST.length - 1]?.playerCount >= WORLD_LIST[WORLD_LIST.length - 1]?.playerMax) { // If there is no world or latest world has more than 4 players create a new world
         world = new World(guid(), 4); // World instance
         WORLD_LIST.push(world);
     } else {
@@ -171,9 +171,11 @@ setInterval(() => {
 
 // Remove empty worlds from WORLD_LIST array
 setInterval(() => {
-    for (let [index, world] of WORLD_LIST.entries()) {
+    for (let i in WORLD_LIST) {
+
+		const world = WORLD_LIST[i];
         if (!world.playerCount) {
-            delete WORLD_LIST[index];
+            delete WORLD_LIST[i];
             console.log('World (id: ' + world.id + ') deleted with ' + world.playerCount + ' players');
         }
     }

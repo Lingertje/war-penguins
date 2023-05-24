@@ -14,18 +14,9 @@ characterSelf.src = 'img/character_self.png';
 medkitImg.src = 'img/medkit.png';
 
 window.onload = function () {
-	var cc = document.getElementById('canvas-consumables');
-	cc.width = canvas.width;
-	cc.height = canvas.height;
-	var cctx = cc.getContext('2d');
-    var c = document.getElementById('canvas')
-    c.width = canvas.width;
-    c.height = canvas.height;
-    var ctx = c.getContext('2d');
-    var cui = document.getElementById('canvas-ui');
-    cui.width = canvas.width;
-    cui.height = canvas.height;
-    var ctxui = cui.getContext('2d');
+	let cctx = createCanvas('canvas-consumables');
+	let ctx = createCanvas('canvas');
+	let ctxui = createCanvas('canvas-ui');
 
     socket.on('world', data => {
         document.querySelector('.js-world-id').href = `${window.location.href}?world=${data}`;
@@ -60,49 +51,37 @@ window.onload = function () {
 
     socket.on('updatePosition', players => {
         ctx.clearRect(0, 0, canvas.width, canvas.height); //Clear the canvas
-        ctxui.clearRect(0, 0, canvas.width, canvas.height); //Clear the canvas
+        ctxui.clearRect(0, 0, canvas.width, canvas.height); //Clear the UI canvas
 
         players.forEach( player => {
-            var bullets = player.weapon.bullets;
+			if (playerSelf && Object.is(player.id, playerSelf.id)) playerSelf = player;
+            let bullets = player.weapon.bullets;
 
-            // Draw a healthbar
-            ctx.fillStyle = '#b70e17';
-            ctx.fillRect(player.xPos, player.yPos - 10, player.health / 2, 5);
-            ctx.strokeStyle = '#000';
-            ctx.strokeRect(player.xPos, player.yPos - 10, 50, 5);
-
-            // Call the function that draws the players
-            if (playerSelf && Object.is(player.id, playerSelf.id)) {
-                playerSelf = player;
-                drawSelf(playerSelf);
-
-                // UI text
-                drawUI();
-            } else {
-                drawPlayer(player);
-            }
+			drawPlayer(player);
 
             // Call the function that draws the bullets the player fired
             bullets.forEach( bullet => {
                 drawBullet(bullet);
             });
         });
+
+		drawUI();
     });
 
     function drawPlayer (player) {
-        if(Object.is(player.direction, 'right')){
-            ctx.drawImage(characterImg, 292, 0, 292, 322, player.xPos, player.yPos, player.width, player.height);
-        } else {
-            ctx.drawImage(characterImg, 0, 0, 292, 322, player.xPos, player.yPos, player.width, player.height);
-        }
-    }
+		const characterUrl = playerSelf && Object.is(player.id, playerSelf.id) ? characterSelf : characterImg;
 
-    function drawSelf (player) {
         if(Object.is(player.direction, 'right')){
-            ctx.drawImage(characterSelf, 292, 0, 292, 322, player.xPos, player.yPos, player.width, player.height);
+            ctx.drawImage(characterUrl, 292, 0, 292, 322, player.xPos, player.yPos, player.width, player.height);
         } else {
-            ctx.drawImage(characterSelf, 0, 0, 292, 322, player.xPos, player.yPos, player.width, player.height);
+            ctx.drawImage(characterUrl, 0, 0, 292, 322, player.xPos, player.yPos, player.width, player.height);
         }
+
+		// Draw a healthbar above character
+		ctx.fillStyle = '#b70e17';
+		ctx.fillRect(player.xPos, player.yPos - 10, player.health / 2, 5);
+		ctx.strokeStyle = '#000';
+		ctx.strokeRect(player.xPos, player.yPos - 10, 50, 5);
     }
 
     function drawBullet (bullet) {
@@ -136,41 +115,32 @@ window.onload = function () {
         audio.play();
     }
 
-    document.onkeydown = function (event) {
-        switch (event.key) {
-            case 'Shift':
-            case 'a':
-            case 'ArrowLeft':
-            case 'd':
-            case 'ArrowRight':
-            case 'w':
-            case 'ArrowUp':
-            case 's':
-            case 'ArrowDown':
-            case ' ':
-            case 'r':
-			case 'e':
-                socket.emit('keyPress', { inputId: event.key, state: true });
-                break;
-        }
-    };
-
-    document.onkeyup = function (event) {
-        switch (event.key) {
-            case 'Shift':
-            case 'a':
-            case 'ArrowLeft':
-            case 'd':
-            case 'ArrowRight':
-            case 'w':
-            case 'ArrowUp':
-            case 's':
-            case 'ArrowDown':
-            case ' ':
-            case 'r':
-			case 'e':
-                socket.emit('keyPress', { inputId: event.key, state: false });
-                break;
-        }
-    }
+    document.onkeydown = (event) => handleKeyPress(event, true);
+    document.onkeyup = (event) => handleKeyPress(event, false);
 };
+
+function createCanvas (id) {
+	const c = document.getElementById(id);
+    c.width = canvas.width;
+    c.height = canvas.height;
+    return c.getContext('2d');
+}
+
+function handleKeyPress (event, state) {
+	switch (event.key) {
+		case 'Shift':
+		case 'a':
+		case 'ArrowLeft':
+		case 'd':
+		case 'ArrowRight':
+		case 'w':
+		case 'ArrowUp':
+		case 's':
+		case 'ArrowDown':
+		case ' ':
+		case 'r':
+		case 'e':
+			socket.emit('keyPress', { inputId: event.key, state });
+			break;
+	}
+}
