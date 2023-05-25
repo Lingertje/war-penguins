@@ -10,9 +10,10 @@ env:
 
 jobs:
   test:
-    name: Jest tests
+    name: Run tests
     runs-on: ubuntu-latest
     steps:
+      - name: tests
       - uses: actions/checkout@v3
       - run: |
           yarn
