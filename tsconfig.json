@@ -14,7 +14,7 @@
 		"rootDir": "server",
 		"outDir": "dist",
 	},
-	"include": ["server/**/*.mts"],
+	"include": ["server/**/*.mts", "server/helpers/index.ts", "server/socketio/socket.ts", "server/server.ts", "server/classes/world.ts", "server/classes/weapon.ts", "server/classes/player.ts", "server/classes/medkit.ts", "server/classes/entity.ts", "server/classes/bullet.ts"],
 	"exclude": [
         "node_modules"
 	]

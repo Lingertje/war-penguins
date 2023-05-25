@@ -1,4 +1,4 @@
-import Entity from './entity.mjs';
+import Entity from './entity.js';
 
 export default class Bullet extends Entity {
     id: string;

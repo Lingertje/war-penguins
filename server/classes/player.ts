@@ -1,5 +1,5 @@
-import Entity from './entity.mjs';
-import type Weapon from './weapon.mjs';
+import Entity from './entity.js';
+import type Weapon from './weapon.js';
 
 class Player extends Entity {
     id: string;

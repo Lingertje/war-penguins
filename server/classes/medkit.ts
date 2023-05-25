@@ -1,5 +1,5 @@
-import Entity from './entity.mjs';
-import type Player from './player.mjs';
+import Entity from './entity.js';
+import type Player from './player.js';
 
 export interface Consumable extends Entity {
 	use: (player: Player) => void;

@@ -7,6 +7,10 @@ const canvas = {
     height: 600
 }
 
+const colors = {
+	BLACK: '#000',
+}
+
 let playerSelf;
 const characterImg = new Image();
 const characterSelf = new Image();
@@ -82,7 +86,7 @@ window.onload = function () {
 		// Draw a healthbar above character
 		ctx.fillStyle = '#b70e17';
 		ctx.fillRect(player.xPos, player.yPos - 10, player.health / 2, 5);
-		ctx.strokeStyle = '#000';
+		ctx.strokeStyle = colors.BLACK;
 		ctx.strokeRect(player.xPos, player.yPos - 10, 50, 5);
     }
 
@@ -95,17 +99,22 @@ window.onload = function () {
 	}
 
     function drawUI () {
-        ctxui.font = "24px Arial";
+		ctxui.font = "24px Arial";
         ctxui.fillStyle = "#fff";
         ctxui.fillText('Kill count: ' + playerSelf.kills, 20, 50); // Kill count
         ctxui.fillText(playerSelf.weapon.bulletsInMag + '/' + playerSelf.weapon.magSize, canvas.width - 100, canvas.height - 25); // Bullets
-        ctxui.fillText(playerSelf.health + 'hp', canvas.width / 2 - 30, canvas.height - 25); // Health
 
-        // Healthbar
-        ctx.fillStyle = '#b70e17';
-        ctx.fillRect(canvas.width / 2 - 100, canvas.height - 47, playerSelf.health * 2, 30);
-        ctx.strokeStyle = '#000';
-        ctx.strokeRect(canvas.width / 2 - 100, canvas.height - 47, 200, 30);
+		// Healthbar
+		ctxui.fillStyle = colors.BLACK;
+        ctxui.fillRect(canvas.width / 2 - 100, canvas.height - 47, 200, 30);
+        ctxui.fillStyle = '#b70e17';
+        ctxui.fillRect(canvas.width / 2 - 100, canvas.height - 47, playerSelf.health * 2, 30);
+        ctxui.strokeStyle = colors.BLACK;
+        ctxui.strokeRect(canvas.width / 2 - 100, canvas.height - 47, 200, 30);
+
+		ctxui.font = "20px Arial";
+		ctxui.fillStyle = "#fff";
+        ctxui.fillText(playerSelf.health + 'hp', canvas.width / 2 - 28, canvas.height - 26); // Health
     }
 
     function playAudio(position){

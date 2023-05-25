@@ -1,11 +1,11 @@
 import { Server, Socket } from 'socket.io';
 
-import World from '../classes/world.mjs';
-import Player from '../classes/player.mjs';
-import Weapon from '../classes/weapon.mjs';
-import { collides, guid } from '../helpers/index.mjs';
-import Medkit from '../classes/medkit.mjs';
-import { io } from '../server.mjs';
+import World from '../classes/world.js';
+import Player from '../classes/player.js';
+import Weapon from '../classes/weapon.js';
+import { collides, guid } from '../helpers/index.js';
+import Medkit from '../classes/medkit.js';
+import { io } from '../server.js';
 
 let SOCKET_LIST: Map<string, Socket> = new Map();
 let WORLD_LIST: Array<World> = [];

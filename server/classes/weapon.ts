@@ -1,4 +1,4 @@
-import Bullet from './bullet.mjs';
+import Bullet from './bullet.js';
 
 export default class Weapon {
     id: string;

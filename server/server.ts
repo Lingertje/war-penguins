@@ -13,7 +13,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Import files
-import socket from './socketio/socket.mjs';
+import socket from './socketio/socket.js';
 socket();
 
 // Set port for server to listen to

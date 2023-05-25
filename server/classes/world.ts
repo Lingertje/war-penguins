@@ -1,7 +1,7 @@
-import { collides } from '../helpers/index.mjs';
-import type Bullet from './bullet.mjs';
-import type Player from './player.mjs';
-import type Consumable from './medkit.mjs';
+import { collides } from '../helpers/index.js';
+import type Bullet from './bullet.js';
+import type Player from './player.js';
+import type Consumable from './medkit.js';
 
 class World {
     id: string;
